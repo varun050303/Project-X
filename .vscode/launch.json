@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Bun Program",
+            "runtimeExecutable": "bun", // Use Bun as the runtime
+            "program": "${workspaceFolder}/src/index.js", // Adjust the path to your entry point file
+            "skipFiles": [
+                "<node_internals>/**"
+            ]
+        }
+    ]
+}
