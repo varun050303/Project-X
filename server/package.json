@@ -6,7 +6,7 @@
     "@types/bun": "latest"
   },
   "scripts": {
-    "start": "bun run index.js"
+    "start": "bun run src/index.js"
   },
   "dependencies": {
     "express": "^4.19.2",
