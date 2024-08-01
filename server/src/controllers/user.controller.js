@@ -21,3 +21,20 @@ export const getUserById = asyncHandler(async (req, res) => {
         new ApiResponse(201, user, "User fetched successfully")
     )
 })
+
+
+export const createUser = asyncHandler(async (req, res) => {
+    const { name, username, email, password, phone_number, role, rating, profile_pic } = req.body
+    const user = await userModel.createUser({ name, username, email, password, phone_number, role, rating, profile_pic })
+    return res.status(201).json(
+        new ApiResponse(201, user, "User successfully created")
+    )
+})
+
+export const deleteUser = asyncHandler(async (req, res) => {
+    const userId = 22
+    const user = await userModel.deleteUser(userId)
+    return res.status(201).json(
+        new ApiResponse(201, user, "User deleted successfully")
+    )
+})
