@@ -11,7 +11,7 @@ export const getUserById = async (id) => {
 }
 
 export const createUser = async ({ name, username, email, password, phone_number, role, rating, profile_pic }) => {
-    const data = await pool.query('INSERT INTO users(name, username, email, password, phone_number, role, rating, profile_pic) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING *', [name, username, email, password, phone_number, role, rating, profile_pic])
+    const data = await pool.query('INSERT INTO users(name, username, email, password, phone_number, role, rating, profile_pic) VALUES ($1,$2,$3,$4,$5,$6,$7,$8) RETURNING id', [name, username, email, password, phone_number, role, rating, profile_pic])
     return data.rows[0]
 }
 

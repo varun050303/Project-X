@@ -21,3 +21,7 @@ export const getWorkerById = asyncHandler(async (req, res) => {
         new ApiResponse(201, user, "Data fetched successfully")
     )
 })
+
+export const createWorker = asyncHandler(async (req, res) => {
+
+})
