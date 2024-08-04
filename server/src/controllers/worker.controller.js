@@ -23,5 +23,13 @@ export const getWorkerById = asyncHandler(async (req, res) => {
 })
 
 export const createWorker = asyncHandler(async (req, res) => {
+    const { userId, experienceYears, skills, hourlyRate } = req.body
+    const newWorker = workerModel.createWorker({ userId, experienceYears, skills, hourlyRate })
+    if (!newWorker) {
+        throw new ApiError(500, 'Some error occoured');
+    }
 
+    return res.status(201).json(
+        new ApiResponse(201, newWorker, 'Worker created successfully')
+    )
 })

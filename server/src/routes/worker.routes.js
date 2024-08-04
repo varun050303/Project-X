@@ -5,5 +5,6 @@ const router = express.Router();
 
 router.get('/', workerController.getWorkers);
 router.get('/:id', workerController.getWorkerById);
+router.post('/', workerController.createWorker);
 
 export default router;

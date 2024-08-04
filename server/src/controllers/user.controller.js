@@ -24,10 +24,10 @@ export const getUserById = asyncHandler(async (req, res) => {
 
 
 export const createUser = asyncHandler(async (req, res) => {
-    const { name, username, email, password, phone_number, role, rating, profile_pic } = req.body
-    const user = await userModel.createUser({ name, username, email, password, phone_number, role, rating, profile_pic })
+    const { name, username, email, password, phoneNumber, role, rating, profilePic } = req.body
+    const newUser = await userModel.createUser({ name, username, email, password, phoneNumber, role, rating, profilePic })
     return res.status(201).json(
-        new ApiResponse(201, user, "User successfully created")
+        new ApiResponse(201, newUser, "User successfully created")
     )
 })
 
