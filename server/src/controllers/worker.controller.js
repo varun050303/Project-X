@@ -33,3 +33,11 @@ export const createWorker = asyncHandler(async (req, res) => {
         new ApiResponse(201, newWorker, 'Worker created successfully')
     )
 })
+
+export const deleteWorker = asyncHandler(async (req, res) => {
+    const { userId } = req.body
+    const worker = await workerModel.deleteWorker(userId)
+    return res.status(201).json(
+        new ApiResponse(201, worker, "Worker deleted successfully")
+    )
+})

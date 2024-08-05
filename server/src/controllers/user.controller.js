@@ -32,7 +32,7 @@ export const createUser = asyncHandler(async (req, res) => {
 })
 
 export const deleteUser = asyncHandler(async (req, res) => {
-    const userId = req.body
+    const { userId } = req.body
     const user = await userModel.deleteUser(userId)
     return res.status(201).json(
         new ApiResponse(201, user, "User deleted successfully")

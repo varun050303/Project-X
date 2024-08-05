@@ -16,5 +16,6 @@ export const createUser = async ({ name, username, email, password, phoneNumber,
 }
 
 export const deleteUser = async (userId) => {
-    const user = pool.query('DELETE FROM users WHERE id = $1 RETURNING *', [userId])
+    const data = pool.query('DELETE FROM users WHERE id = $1 RETURNING *', [userId])
+    return data.rows[0]
 }
