@@ -2,8 +2,7 @@ import asyncHandler from '../middlewares/asyncHandler.js'
 import * as userModel from '../models/user.model.js'
 import { ApiError } from '../utils/apiError.js'
 import { ApiResponse } from '../utils/apiResponse.js'
-import jwt from 'jsonwebtoken';
-import bcrypt from 'bcryptjs';
+import bcrypt from 'bcrypt';
 
 const options = {
     httpOnly: true,
@@ -87,32 +86,5 @@ export const logoutUser = asyncHandler(async (req, res) => {
     const user = await userModel.logoutUser(userId)
 
     res.status(200).json(new ApiResponse(200, user, "User logged out successfully"));
-});
-
-export const refreshAccessToken = asyncHandler(async (req, res) => {
-    const incomingRefreshToken = req.body.refreshToken;
-
-    if (!incomingRefreshToken) {
-        throw new ApiError(401, "Unauthorized access");
-    }
-
-    let decodedToken;
-    try {
-        decodedToken = jwt.verify(incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET);
-    } catch (error) {
-        throw new ApiError(401, "Invalid refresh token");
-    }
-
-    const user = await userModel.getUserById(decodedToken.id);
-    if (!user || incomingRefreshToken !== user.refresh_token) {
-        throw new ApiError(401, "Refresh token expired");
-    }
-
-    const { accessToken, refreshToken } = await userModel.generateTokens(user.id);
-
-    return res.status(200)
-        .cookie("accessToken", accessToken, options)
-        .cookie("refreshToken", refreshToken, options)
-        .json(new ApiResponse(200, {}, "Tokens refreshed"));
 });
 
