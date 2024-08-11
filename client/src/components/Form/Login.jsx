@@ -55,7 +55,6 @@ export default function Login() {
             <FormExtra />
             <FormAction handleSubmit={handleSubmit} text="Login" />
             <HorizontalDividerWithText content="or" />
-
             <OAuth />
         </form>
     )
