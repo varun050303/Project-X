@@ -62,9 +62,6 @@ export const fetchGoogleUser = async (access_token, id_token) => {
     )
     return response.data
 }
-
-import axios from 'axios';
-
 const getGoogleUserContacts = async (accessToken) => {
     const response = await axios.get('https://people.googleapis.com/v1/people/me/connections', {
         headers: {
