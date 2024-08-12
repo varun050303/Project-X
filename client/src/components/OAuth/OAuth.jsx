@@ -4,7 +4,7 @@ export default function OAuth() {
 
     //Handle Login API Integration here
     const handleLogin = () => {
-        window.location.href = '/api/auth/google';
+        window.location.href = '/auth/google';
     };
 
     return (

@@ -88,3 +88,14 @@ export const logoutUser = asyncHandler(async (req, res) => {
     res.status(200).json(new ApiResponse(200, user, "User logged out successfully"));
 });
 
+export const getCurrentUser = async (req, res) => {
+    const token = req.cookies[process.env.AUTH_COOKIE_NAME];
+    if (!token) {
+        throw new ApiError(401, 'Access token is required');
+    }
+
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+        if (err) throw new ApiError(403, 'Invalid access token');
+        res.json(user);
+    });
+}
