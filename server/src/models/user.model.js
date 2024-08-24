@@ -1,4 +1,4 @@
-import pool from "../config/db";
+import pool from "../config/db.js";
 import jwt from 'jsonwebtoken';
 
 export const getUsers = async () => {

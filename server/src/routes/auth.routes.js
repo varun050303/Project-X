@@ -1,12 +1,13 @@
 import express from 'express';
 import { refreshAccessToken } from '../controllers/auth.controller.js';
-import { generateGoogleAuthUrl, handleGoogleLogin } from '../googleAuth/googleAuthController.js';
+import { handleGoogleAuth, handleGoogleAuthCallback } from '../controllers/googleAuthController.js';
 
 const router = express.Router();
 
 router.post('/refresh-token', refreshAccessToken);
-router.get('/google/url', generateGoogleAuthUrl)
-router.get('/google/callback', handleGoogleLogin)
+router.get('/google', handleGoogleAuth);
+router.get('/google/callback', handleGoogleAuthCallback);
+
 
 
 export default router;

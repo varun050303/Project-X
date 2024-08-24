@@ -1,4 +1,4 @@
-import pool from "../config/db";
+import pool from "../config/db.js";
 
 export const getWorkers = async () => {
     const data = await pool.query('SELECT * FROM workers')

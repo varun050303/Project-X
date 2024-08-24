@@ -1,18 +1,9 @@
-import React from 'react';
-import { useAuth } from '../providers/AuthProvider';
+import React from 'react'
 
-const Home = () => {
-    const { user } = useAuth();
-
-    if (!user) {
-        return <div>You need to log in</div>;
-    }
-
+export default function Home() {
     return (
         <div>
-            Welcome, {user.name}!
+            Hie
         </div>
-    );
-};
-
-export default Home;
+    )
+}

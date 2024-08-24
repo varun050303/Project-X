@@ -1,6 +1,12 @@
 import axios from "axios";
-import { calculateAge } from "../utils/calculateAge";
+import { calculateAge } from "../utils/calculateAge.js";
 import queryString from "query-string";
+
+const googleRedirectUri = process.env.GOOGLE_REDIRECT_URI
+const serverRootUri = process.env.SERVER_ROOT_URI
+const googleAuthUrl = process.env.GOOGLE_OAUTH_URL
+const googleClientId = process.env.GOOGLE_CLIENT_ID
+
 
 export const fetchGoogleUserMetaData = async (accessToken) => {
     try {
@@ -25,11 +31,12 @@ export const fetchGoogleUserMetaData = async (accessToken) => {
 };
 
 //Get access token and id token from google in exchange for code
-export const fetchGoogleAuthToken = async ({
+export const exchangeCodeForTokens = async ({
     code,
     clientId,
     clientSecret,
     redirectUri,
+    codeVerifier
 }) => {
     const url = process.env.GOOGLE_ACCESS_TOKEN_URL
     const values = {
@@ -38,17 +45,17 @@ export const fetchGoogleAuthToken = async ({
         client_secret: clientSecret,
         redirect_uri: redirectUri,
         grant_type: 'authorization_code',
+        codeVerifier: codeVerifier
     }
-    return axios.post(url, queryString.stringify(values), {
+
+    const response = await axios.post(url, queryString.stringify(values), {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
     }
     )
-        .then((response) => response.data)
-        .catch((error) => {
-            throw new Error(error.message);
-        })
+
+    return response.data
 }
 
 export const fetchGoogleUser = async (access_token, id_token) => {
@@ -62,6 +69,24 @@ export const fetchGoogleUser = async (access_token, id_token) => {
     )
     return response.data
 }
+
+export const generateGoogleAuthUrl = (codeChallenge) => {
+    const rootUrl = googleAuthUrl;
+    const options = {
+        redirect_uri: `${serverRootUri}/${googleRedirectUri}`,
+        client_id: googleClientId,
+        access_type: "offline",
+        response_type: "code",
+        prompt: "consent",
+        scope: "openid profile email",
+        code_challenge: codeChallenge,
+        code_challenge_method: "S256"
+    }
+
+    const url = `${rootUrl}?${queryString.stringify(options)}`;
+    return url
+}
+
 const getGoogleUserContacts = async (accessToken) => {
     const response = await axios.get('https://people.googleapis.com/v1/people/me/connections', {
         headers: {

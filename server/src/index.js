@@ -5,6 +5,7 @@ import authRoutes from './routes/auth.routes.js'
 import helmet from 'helmet'
 import cookieParser from "cookie-parser"
 import cors from 'cors'
+import session from 'express-session'
 
 export const app = express();
 const port = process.env.PORT || 3000;
@@ -18,14 +19,16 @@ app.use(cors({
     credentials: true // Allow credentials (cookies, authorization headers, etc.)
 }))
 
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false } // For development; set secure: true in production
+}));
 
 app.use('/api/users', userRoutes)
 app.use('/api/workers', workerRoutes)
 app.use('/auth', authRoutes)
-
-app.get('/home', async (req, res) => {
-    res.send('Hello World!');
-});
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
