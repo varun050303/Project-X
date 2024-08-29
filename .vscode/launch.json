@@ -4,11 +4,47 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Debug React App",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run",
+                "dev"
+            ],
+            "env": {
+                "BROWSER": "none"
+            },
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen",
+            "cwd": "${workspaceFolder}/client",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "sourceMaps": true,
+            "resolveSourceMapLocations": [
+                "${workspaceFolder}/**",
+                "!**/node_modules/**"
+            ],
+            "outFiles": [
+                "${workspaceFolder}/client/dist/**/*.js"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Debug with Node",
             "program": "${workspaceFolder}/server/src/index.js",
             "cwd": "${workspaceFolder}/server",
             "console": "integratedTerminal",
             "envFile": "${workspaceFolder}/server/.env"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Debug Full Stack (Node)",
+            "configurations": [
+                "Debug React App",
+                "Debug with Node"
+            ]
         }
     ]
 }

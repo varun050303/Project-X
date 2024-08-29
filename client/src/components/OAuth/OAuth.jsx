@@ -7,8 +7,6 @@ export default function OAuth() {
         window.location.href = 'http://localhost:3000/auth/google'
     };
 
-
-
     return (
         <button className='bg-white rounded-md flex flex-row items-center m-auto gap-3 border px-3.5 py-3' onClick={handleLogin}>
             <div>

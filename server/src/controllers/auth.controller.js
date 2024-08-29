@@ -7,6 +7,23 @@ const options = {
     sameSite: 'Strict'
 };
 
+
+export const verifyToken = (req, res) => {
+    const token = req.cookies.authToken; // Retrieve the token from the HTTP-only cookie
+    if (!token) {
+        throw new ApiError(401, 'Token not provided');// Unauthorized
+    }
+
+    try {
+        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        res.status(200).json(
+            new ApiResponse(200, { isValid: true }, 'Token is valid')
+        )
+    } catch (error) {
+        throw new ApiError(401, 'Invalid Token');
+    }
+}
+
 // Refresh access token
 export const refreshAccessToken = async (req, res) => {
     try {

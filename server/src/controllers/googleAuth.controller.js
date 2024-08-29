@@ -9,8 +9,6 @@ const clientRootUri = process.env.CLIENT_ROOT_URI
 
 const googleRedirectUri = process.env.GOOGLE_REDIRECT_URI
 const serverRootUri = process.env.SERVER_ROOT_URI
-const googleAuthUrl = process.env.GOOGLE_OAUTH_URL
-const googleClientId = process.env.GOOGLE_CLIENT_ID
 
 // Step 1: Start the Google OAuth process
 export const handleGoogleAuth = (req, res) => {

@@ -3,6 +3,7 @@ import * as userModel from '../models/user.model.js'
 import { ApiError } from '../utils/apiError.js'
 import { ApiResponse } from '../utils/apiResponse.js'
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken'
 
 const options = {
     httpOnly: true,
@@ -89,7 +90,7 @@ export const logoutUser = asyncHandler(async (req, res) => {
 });
 
 export const getCurrentUser = async (req, res) => {
-    const token = req.cookies[process.env.AUTH_COOKIE_NAME];
+    const token = req.cookies.authToken;
     if (!token) {
         throw new ApiError(401, 'Access token is required');
     }
