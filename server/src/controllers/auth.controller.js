@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { decode } from 'jsonwebtoken';
 import { ApiError } from '../utils/apiError.js';
 import { ApiResponse } from '../utils/apiResponse.js';
 
@@ -11,16 +11,16 @@ const options = {
 export const verifyToken = (req, res) => {
     const token = req.cookies.authToken; // Retrieve the token from the HTTP-only cookie
     if (!token) {
-        throw new ApiError(401, 'Token not provided');// Unauthorized
+        throw new ApiError(401, 'Token not provided', { isValid: false });// Unauthorized
     }
 
     try {
-        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
         res.status(200).json(
-            new ApiResponse(200, { isValid: true }, 'Token is valid')
+            new ApiResponse(200, { isValid: true, user: decoded }, 'Token is valid')
         )
     } catch (error) {
-        throw new ApiError(401, 'Invalid Token');
+        throw new ApiError(401, 'Invalid Token', { isValid: false });
     }
 }
 
