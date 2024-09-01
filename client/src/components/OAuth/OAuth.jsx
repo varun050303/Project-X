@@ -4,7 +4,7 @@ import axios from 'axios'
 export default function OAuth() {
     //Handle Login API Integration here
     const handleLogin = async () => {
-        window.location.href = 'http://localhost:3000/auth/google'
+        window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`
     };
 
     return (
