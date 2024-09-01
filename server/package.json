@@ -6,8 +6,8 @@
     "@types/bun": "latest"
   },
   "scripts": {
-    "build": "bun install",
-    "start": "bun run src/index.js",
+    "build": "node install",
+    "start": "node src/index.js",
     "dev": "bun --watch src/index.js"
   },
   "dependencies": {
