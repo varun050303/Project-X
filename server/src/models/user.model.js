@@ -1,5 +1,6 @@
 import pool from "../config/db.js";
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcryptjs';
 
 export const getUsers = async () => {
     const data = await pool.query('SELECT * FROM users')

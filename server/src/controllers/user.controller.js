@@ -2,7 +2,7 @@ import asyncHandler from '../middlewares/asyncHandler.js'
 import * as userModel from '../models/user.model.js'
 import { ApiError } from '../utils/apiError.js'
 import { ApiResponse } from '../utils/apiResponse.js'
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken'
 
 const options = {
