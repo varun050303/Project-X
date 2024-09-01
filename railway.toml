@@ -1,0 +1,10 @@
+# railway.toml
+[services.client]
+root = "./client"
+build = "npm install && npm run build"
+start = "npm run start"
+
+[services.server]
+root = "./server"
+build = "npm install"
+start = "npm run start"
