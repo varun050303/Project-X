@@ -5,6 +5,6 @@ export default function Home() {
 
     const { user } = useAuth()
     return (
-        <p>Hie</p>
+        <p>Hie {user.name}</p>
     )
 }
