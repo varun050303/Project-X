@@ -3,6 +3,6 @@ export const setAuthCookie = (res, token) => {
         maxAge: 900000,
         httpOnly: true,
         secure: true,
-        sameSite: 'Strict',
+        sameSite: "none"
     });
 };
