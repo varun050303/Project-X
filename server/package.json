@@ -7,7 +7,7 @@
   },
   "scripts": {
     "build": "bun install",
-    "start": "NODE_ENV=production bun src/server.js",
+    "start": "NODE_ENV=production bun src/index.js",
     "start:dev": "NODE_ENV=development bun --watch src/index.js",
     "dev": "bun --watch src/index.js"
   },
