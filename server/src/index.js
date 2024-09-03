@@ -23,7 +23,7 @@ app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false } // For development; set secure: true in production
+    cookie: { secure: process.env.NODE_ENV === "production" ? true : false } // For development; set secure: true in production
 }));
 
 app.use('/api/users', userRoutes)
