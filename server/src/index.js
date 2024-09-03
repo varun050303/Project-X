@@ -15,7 +15,7 @@ app.use(cookieParser())
 app.use(helmet())
 
 app.use(cors({
-    origin: 'https://project-x-xz53.onrender.com',
+    origin: process.env.CLIENT_ROOT,
     credentials: true // Allow credentials (cookies, authorization headers, etc.)
 }))
 

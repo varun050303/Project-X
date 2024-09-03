@@ -5,7 +5,7 @@
             "type": "node",
             "request": "launch",
             "name": "Debug React App",
-            "runtimeExecutable": "npm",
+            "runtimeExecutable": "bun",
             "runtimeArgs": [
                 "run",
                 "dev"
@@ -35,7 +35,7 @@
             "program": "${workspaceFolder}/server/src/index.js",
             "cwd": "${workspaceFolder}/server",
             "console": "integratedTerminal",
-            "envFile": "${workspaceFolder}/server/.env"
+            "envFile": "${workspaceFolder}/server/.env.development",
         }
     ],
     "compounds": [

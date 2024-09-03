@@ -95,7 +95,7 @@ export const getCurrentUser = async (req, res) => {
         throw new ApiError(401, 'Access token is required');
     }
 
-    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    jwt.verify(token, process.env.ACCESS_SECRET, (err, user) => {
         if (err) throw new ApiError(403, 'Invalid access token');
         res.json(user);
     });

@@ -3,7 +3,7 @@ import { calculateAge } from "../utils/calculateAge.js";
 import queryString from "query-string";
 
 const googleRedirectUri = process.env.GOOGLE_REDIRECT_URI
-const serverRootUri = process.env.SERVER_ROOT_URI
+const serverRootUri = process.env.SERVER_ROOT
 const googleAuthUrl = process.env.GOOGLE_OAUTH_URL
 const googleClientId = process.env.GOOGLE_CLIENT_ID
 
@@ -38,7 +38,7 @@ export const exchangeCodeForTokens = async ({
     redirectUri,
     codeVerifier
 }) => {
-    const url = process.env.GOOGLE_ACCESS_TOKEN_URL
+    const url = process.env.GOOGLE_TOKEN_URL
     const values = {
         code,
         client_id: clientId,

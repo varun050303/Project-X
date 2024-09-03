@@ -34,7 +34,7 @@ export const getUserByEmail = async (email) => {
 
 // Generate JWT Tokens
 export const generateTokens = async (userId) => {
-    const accessToken = jwt.sign({ id: userId }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: process.env.ACCESS_TOKEN_EXPIRY });
+    const accessToken = jwt.sign({ id: userId }, process.env.ACCESS_SECRET, { expiresIn: process.env.ACCESS_TOKEN_EXPIRY });
     const refreshToken = jwt.sign({ id: userId }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: process.env.REFRESH_TOKEN_EXPIRY });
 
     await pool.query('UPDATE users SET refresh_token = $1 WHERE id = $2', [refreshToken, userId]);

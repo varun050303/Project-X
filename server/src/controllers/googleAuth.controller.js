@@ -5,10 +5,10 @@ import { generateToken } from "../utils/tokenService.js";
 import { exchangeCodeForTokens, fetchGoogleUser, fetchGoogleUserMetaData, generateGoogleAuthUrl } from "../services/googleAuthService.js";
 import { generateCodeChallenge, generateCodeVerifier } from "../utils/pkce.js";
 
-const clientRootUri = process.env.CLIENT_ROOT_URI
+const clientRedirectUri = process.env.CLIENT_REDIRECT_URI
 
 const googleRedirectUri = process.env.GOOGLE_REDIRECT_URI
-const serverRootUri = process.env.SERVER_ROOT_URI
+const serverRootUri = process.env.SERVER_ROOT
 
 // Step 1: Start the Google OAuth process
 export const handleGoogleAuth = (req, res) => {
@@ -53,5 +53,5 @@ export const handleGoogleAuthCallback = async (req, res) => {
     const token = generateToken(user);
     setAuthCookie(res, token)
 
-    res.redirect(clientRootUri);
+    res.redirect(clientRedirectUri);
 }
