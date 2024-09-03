@@ -30,6 +30,10 @@ app.use('/api/users', userRoutes)
 app.use('/api/workers', workerRoutes)
 app.use('/auth', authRoutes)
 
+app.get('/check-health', (_, res) => {
+    res.status(200).json({ status: 'ok', message: 'Service is healthy' });
+})
+
 app.listen(3000, "0.0.0.0", () => {
     console.log(`Server running on port ${port}`);
 });
