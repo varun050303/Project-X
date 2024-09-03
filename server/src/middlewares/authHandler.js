@@ -1,8 +1,9 @@
 import jwt from 'jsonwebtoken';
 import { ApiError } from '../utils/apiError.js';
 
+const authCookieName = process.env.AUTH_COOKIE_NAME
 export const authenticate = (req, _, next) => {
-    const token = req.cookies[process.env.AUTH_COOKIE_NAME];
+    const token = req.cookies[authCookieName];
 
     if (!token) {
         throw new ApiError(401, 'Access denied. No token provided.');

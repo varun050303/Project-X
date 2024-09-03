@@ -11,7 +11,7 @@ const authCookieName = process.env.AUTH_COOKIE_NAME
 
 
 export const verifyToken = (req, res) => {
-    const token = req.cookies.authCookieName; // Retrieve the token from the HTTP-only cookie
+    const token = req.cookies[authCookieName]; // Retrieve the token from the HTTP-only cookie
     console.log(token)
     if (!token) {
         throw new ApiError(401, 'Token not provided', { isValid: false });// Unauthorized
