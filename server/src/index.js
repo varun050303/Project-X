@@ -30,6 +30,6 @@ app.use('/api/users', userRoutes)
 app.use('/api/workers', workerRoutes)
 app.use('/auth', authRoutes)
 
-app.listen(port, () => {
+app.listen(port, "0.0.0.0", () => {
     console.log(`Server running on port ${port}`);
 });
