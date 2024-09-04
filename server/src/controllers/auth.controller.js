@@ -7,10 +7,8 @@ const options = {
     sameSite: 'Strict'
 };
 
-const authCookieName = process.env.AUTH_COOKIE_NAME
-
 export const verifyToken = (req, res) => {
-    const token = req.cookies[authCookieName]; // Retrieve the token from the HTTP-only cookie
+    const token = req.cookies.authToken; // Retrieve the token from the HTTP-only cookie
 
     // If no token is provided, return an error response
     if (!token) {

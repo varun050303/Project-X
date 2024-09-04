@@ -45,7 +45,7 @@ export const exchangeCodeForTokens = async ({
         client_secret: clientSecret,
         redirect_uri: redirectUri,
         grant_type: 'authorization_code',
-        codeVerifier: codeVerifier
+        code_verifier: codeVerifier
     }
 
     const response = await axios.post(url, queryString.stringify(values), {
