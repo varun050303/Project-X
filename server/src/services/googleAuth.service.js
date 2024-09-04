@@ -70,7 +70,7 @@ export const fetchGoogleUser = async (access_token, id_token) => {
     return response.data
 }
 
-export const generateGoogleAuthUrl = (codeChallenge) => {
+export const generateGoogleAuthUrl = (codeChallenge, state) => {
     const rootUrl = googleAuthUrl;
     const options = {
         redirect_uri: `${serverRootUri}/${googleRedirectUri}`,
@@ -79,6 +79,7 @@ export const generateGoogleAuthUrl = (codeChallenge) => {
         response_type: "code",
         prompt: "consent",
         scope: "openid profile email",
+        state: state,
         code_challenge: codeChallenge,
         code_challenge_method: "S256"
     }
