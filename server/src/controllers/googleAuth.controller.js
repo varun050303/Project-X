@@ -4,6 +4,7 @@ import { findOrCreateUser } from "../services/user.service.js";
 import { generateToken } from "../utils/tokenService.js";
 import { exchangeCodeForTokens, fetchGoogleUser, fetchGoogleUserMetaData, generateGoogleAuthUrl } from "../services/googleAuthService.js";
 import { generateCodeChallenge, generateCodeVerifier } from "../utils/pkce.js";
+import { ApiError } from "../utils/apiError.js";
 
 const clientRedirectUri = process.env.CLIENT_REDIRECT_URI
 
@@ -29,7 +30,7 @@ export const handleGoogleAuthCallback = async (req, res) => {
 
     const codeVerifier = req.session.codeVerifier;
     if (!codeVerifier) {
-        return res.status(400).json({ error: 'Code verifier is missing' });
+        throw new ApiError(400, "Code verifier is missing")
     }
 
     const { id_token, access_token, refresh_token } = await exchangeCodeForTokens({

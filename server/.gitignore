@@ -176,3 +176,5 @@ dist
 
 # Ignore environment-specific config files
 src/config/*.json
+
+.env.*
