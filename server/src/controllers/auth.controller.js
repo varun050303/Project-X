@@ -9,10 +9,6 @@ const options = {
 
 const authCookieName = process.env.AUTH_COOKIE_NAME
 
-
-import jwt from 'jsonwebtoken';
-import { ApiResponse, ApiError } from '../utils/apiResponses'; // Assuming you have custom classes for handling responses and errors
-
 export const verifyToken = (req, res) => {
     const token = req.cookies[authCookieName]; // Retrieve the token from the HTTP-only cookie
 
