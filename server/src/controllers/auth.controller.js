@@ -10,23 +10,34 @@ const options = {
 const authCookieName = process.env.AUTH_COOKIE_NAME
 
 
+import jwt from 'jsonwebtoken';
+import { ApiResponse, ApiError } from '../utils/apiResponses'; // Assuming you have custom classes for handling responses and errors
+
 export const verifyToken = (req, res) => {
     const token = req.cookies[authCookieName]; // Retrieve the token from the HTTP-only cookie
-    console.log(token)
+
+    // If no token is provided, return an error response
     if (!token) {
-        throw new ApiError(401, 'Token not provided', { isValid: false });// Unauthorized
+        return res.status(401).json(
+            new ApiResponse(401, { isValid: false }, 'Token not provided')
+        );
     }
 
     try {
+        // Verify the token using JWT
         const decoded = jwt.verify(token, process.env.ACCESS_SECRET);
-        res.status(200).json(
-            new ApiResponse(200, { isValid: true, user: decoded }, 'Token is valid')
-        )
-    } catch (error) {
-        throw new ApiError(401, 'Invalid Token', { isValid: false });
-    }
-}
 
+        // If token is valid, return a success response with user data
+        return res.status(200).json(
+            new ApiResponse(200, { isValid: true, user: decoded }, 'Token is valid')
+        );
+    } catch (error) {
+        // If token is invalid, return an error response
+        return res.status(401).json(
+            new ApiResponse(401, { isValid: false }, 'Invalid Token')
+        );
+    }
+};
 // Refresh access token
 export const refreshAccessToken = async (req, res) => {
     try {
