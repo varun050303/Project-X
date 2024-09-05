@@ -31,12 +31,11 @@ export const handleGoogleAuth = async (req, res) => {
 export const handleGoogleAuthCallback = async (req, res) => {
     const { code, state } = req.query;
 
-    const codeVerifier = getCodeVerifier(state)
+    const codeVerifier = await getCodeVerifier(state)
     if (!codeVerifier) {
         throw new ApiError(400, "Code verifier is missing")
     }
 
-    console.log('code verifier is present')
 
     const { id_token, access_token, refresh_token } = await exchangeCodeForTokens({
         code,
@@ -46,8 +45,6 @@ export const handleGoogleAuthCallback = async (req, res) => {
         grantType: "authorization_code",
         redirectUri: `${serverRootUri}/${googleRedirectUri}`,
     });
-
-    console.log('code exchanged for token')
 
     const googleUser = await fetchGoogleUser(access_token, id_token)
     const { gender, age } = await fetchGoogleUserMetaData(access_token);
@@ -59,7 +56,13 @@ export const handleGoogleAuthCallback = async (req, res) => {
     const user = await findOrCreateUser(googleUser)
     // Generate JWT token and set it as a cookie
     const token = generateToken(user);
-    setAuthCookie(res, token)
-    console.log('user created redirecting to page')
-    res.redirect(clientRedirectUri);
+    try {
+        setAuthCookie(res, token);
+        res.redirect(clientRedirectUri);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
+
+
 }
