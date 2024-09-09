@@ -15,6 +15,7 @@ import ProtectedRoutes from "./components/Routing/ProtectedRoutes";
 import { Layout } from "./components/layout/layout";
 import '@mantine/core/styles.css';
 import "./index.css";
+import Profile from "./pages/Profile";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -25,6 +26,7 @@ const router = createBrowserRouter(
         <Route element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/account" element={<Profile />} />
         </Route>
       </Route>
     </>

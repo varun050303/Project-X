@@ -4,12 +4,13 @@ import { VscDashboard } from "react-icons/vsc";
 import { FaHome } from "react-icons/fa";
 import { RiArrowRightSLine } from "react-icons/ri";
 import { VscAccount } from "react-icons/vsc";
+import { MdCurrencyRupee } from "react-icons/md";
 const data = [
     {
         icon: FaHome,
         label: 'Home',
         rightSection: <RiArrowRightSLine size="1rem" />,
-        href: '#'
+        href: '/home'
     },
     {
         icon: VscDashboard,
@@ -21,8 +22,15 @@ const data = [
         icon: VscAccount,
         label: 'Account',
         rightSection: <RiArrowRightSLine size="1rem" />,
+        href: '/account'
+    },
+    {
+        icon: MdCurrencyRupee,
+        label: 'Transactions',
+        rightSection: <RiArrowRightSLine size="1rem" />,
         href: '#'
     },
+
 
 ];
 

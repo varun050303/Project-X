@@ -31,6 +31,8 @@ export function Layout() {
           size="md"
           style={{ cursor: 'pointer' }}
           onClick={toggle}
+          name={user?.name}
+          color="initials"
         />
       </AppShell.Header>
 
