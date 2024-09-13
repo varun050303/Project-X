@@ -5,6 +5,7 @@ import { FaHome } from "react-icons/fa";
 import { RiArrowRightSLine } from "react-icons/ri";
 import { VscAccount } from "react-icons/vsc";
 import { MdCurrencyRupee } from "react-icons/md";
+import { Link } from 'react-router-dom';
 const data = [
     {
         icon: FaHome,
@@ -34,21 +35,24 @@ const data = [
 
 ];
 
-export default function Navbar({ user }) {
+export default function Navbar({ user, toggleNavbar }) {
     const [active, setActive] = useState(0);
 
     const items = data.map((item, index) => (
-        <NavLink
-            href={item.href}
-            key={item.label}
-            active={index === active}
-            label={item.label}
-            description={item.description}
-            rightSection={item.rightSection}
-            leftSection={<item.icon size="1rem" stroke={1.5} />}
-            onClick={() => setActive(index)}
+        <React.Fragment key={index}>
+            <NavLink
+                component={Link}
+                to={item.href}
+                active={index === active}
+                label={item.label}
+                description={item.description}
+                rightSection={item.rightSection}
+                leftSection={<item.icon size="1rem" stroke={1.5} />}
+                onClick={() => { toggleNavbar(); setActive(index) }}
 
-        />
+            />
+
+        </React.Fragment>
     ));
     return (
         <Box>

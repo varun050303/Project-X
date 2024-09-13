@@ -37,7 +37,7 @@ export function Layout() {
       </AppShell.Header>
 
       <AppShell.Navbar p="md">
-        <Navbar user={user} />
+        <Navbar user={user} toggleNavbar={toggle} />
       </AppShell.Navbar>
 
       <AppShell.Main>

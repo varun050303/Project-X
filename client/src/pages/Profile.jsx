@@ -9,6 +9,7 @@ import { RiArrowRightSLine } from "react-icons/ri";
 import { MdModeEdit } from "react-icons/md";
 import { BiSupport } from "react-icons/bi";
 import { RiLogoutBoxLine } from "react-icons/ri";
+import { Link } from 'react-router-dom';
 const data = [
     {
         icon: FaHistory,
@@ -26,7 +27,7 @@ const data = [
         icon: MdModeEdit,
         label: 'Edit Profile',
         rightSection: <RiArrowRightSLine size="1rem" />,
-        href: '/home'
+        href: '/account/edit-profile'
     },
     {
         icon: BiSupport,
@@ -47,20 +48,18 @@ export default function Profile() {
     const { user } = useAuth()
     const infoIcon = <VscInfo />
     const [opened, setOpened] = React.useState(false)
-    const items = data.map((item, index) => (<>
+    const items = data.map((item, index) => (<React.Fragment key={index}>
         <NavLink
-            href={item.href}
-            key={item.label}
+            component={Link}
+            to={item.href}
             label={item.label}
-            description={item.description}
             rightSection={item.rightSection}
             leftSection={<item.icon size="1rem" stroke={1} />}
-            onClick={() => setActive(index)}
             classNames={{
                 label: 'text-base font-semibold',
             }} />
         {data.length - 1 !== index && <Divider my={"xs"} orientation='horizontal' />}
-    </>));
+    </React.Fragment>));
     return (
         <Box>
             <Box>
