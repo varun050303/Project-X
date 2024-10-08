@@ -13,10 +13,11 @@ import Home from "./pages/Home";
 import { AuthProvider } from "./contexts/auth.context";
 import ProtectedRoutes from "./components/Routing/ProtectedRoutes";
 import { Layout } from "./components/layout/layout";
-import '@mantine/core/styles.css';
-import "./index.css";
 import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
+import '@mantine/core/styles.css';
+import '@mantine/carousel/styles.css';
+import "./index.css";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
