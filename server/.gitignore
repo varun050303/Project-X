@@ -178,3 +178,6 @@ dist
 src/config/*.json
 
 .env.*
+
+# Prisma
+prisma/migrations/

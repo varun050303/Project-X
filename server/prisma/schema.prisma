@@ -1,0 +1,156 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  ADMIN
+  CLIENT
+  WORKER
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum Skill {
+  PLUMBING
+  ELECTRICAL
+  CARPENTRY
+  PAINTING
+  CLEANING
+  MECHANICAL
+  PLASTERING
+  MASONRY
+  HVAC //Heating, Ventilation, and Air Conditioning
+  OTHER
+}
+
+enum State {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum JobStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELED
+}
+
+enum BookingStatus {
+  ACCEPTED
+  IN_PROGRESS
+  COMPLETED
+  CANCELED
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  REFUNDED
+}
+
+model User {
+  id           String    @id @default(uuid())
+  phoneNumber  Int?      @unique
+  name         String
+  email        String    @unique
+  profilePic   String?
+  role         Role
+  age          Int?
+  gender       Gender?
+  refreshToken String
+  worker       Worker?
+  job          Job[]
+  bookings     Booking[]
+  ratings      Rating[]
+  status       State
+  address      Address[]
+}
+
+model Worker {
+  id           String    @id @default(uuid())
+  userId       String    @unique
+  user         User      @relation(fields: [userId], references: [id])
+  assignedJobs Job[]
+  skills       Skill?
+  bookings     Booking[]
+  availability Boolean   @default(true)
+  ratings      Rating[]
+}
+
+model Rating {
+  id        String   @id @default(uuid())
+  score     Int?
+  comment   String?
+  createdAt DateTime @default(now())
+  workerId  String
+  worker    Worker   @relation(fields: [workerId], references: [id])
+  clientId  String
+  client    User     @relation(fields: [clientId], references: [id])
+}
+
+model Job {
+  id          String    @id @default(uuid())
+  title       String
+  description String
+  status      JobStatus
+  clientId    String
+  client      User      @relation(fields: [clientId], references: [id])
+  bookings    Booking[]
+  worker      Worker?   @relation(fields: [workerId], references: [id])
+  workerId    String?
+  category    String?
+}
+
+model Booking {
+  id          String        @id @default(uuid())
+  clientId    String
+  jobId       String
+  workerId    String
+  bookingDate DateTime
+  client      User          @relation(fields: [clientId], references: [id])
+  job         Job           @relation(fields: [jobId], references: [id])
+  worker      Worker?       @relation(fields: [workerId], references: [id])
+  payment     Payment[]
+  status      BookingStatus @default(ACCEPTED)
+}
+
+model Payment {
+  id            String        @id @default(uuid())
+  bookingId     String
+  amount        Float
+  booking       Booking       @relation(fields: [bookingId], references: [id])
+  status        PaymentStatus
+  paymentDate   DateTime      @default(now())
+  paymentStatus PaymentStatus
+}
+
+model Address {
+  id        String   @id @default(uuid())
+  userId    String // Foreign key to User or Worker
+  street    String?
+  city      String?
+  state     String?
+  zipCode   Int?
+  country   String?
+  landmark  String? // Optional field for additional address info
+  isPrimary Boolean? // Whether this is the primary address
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model CodeVerifier {
+  id    Int    @id @default(autoincrement())
+  state String @unique
+  code  String
+}
