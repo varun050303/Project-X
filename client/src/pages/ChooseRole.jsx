@@ -1,6 +1,6 @@
 import { Box, Center, Flex, Text } from "@mantine/core";
 import React, { useState } from "react";
-import BaseCard from "../components/common/BaseCard";
+import BaseCard from "../components/common/Card/BaseCard";
 import { useNavigate } from "react-router-dom";
 import { api } from "../api/axios.config";
 

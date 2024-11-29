@@ -2,6 +2,8 @@ import React from "react";
 import { useAuth } from "../contexts/auth.context";
 import { Box, Image, Paper, Pill, Title } from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
+import WorkerHList from "../components/List/WorkerHList";
+import FloatingButton from "../components/common/FloatingButton";
 
 const imagesUrl = [
   "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-3.png",
@@ -16,7 +18,7 @@ export default function Home() {
   return (
     <>
       <Box>
-        <Carousel height={200} loop>
+        <Carousel height={200} withControls={false} loop>
           {imagesUrl.map((image, index) => (
             <Carousel.Slide key={index}>
               <Image src={image} alt={index} />
@@ -26,25 +28,18 @@ export default function Home() {
       </Box>
 
       <Box my={"xl"}>
-        <Paper shadow="xl" p="md" radius="md" withBorder>
-          {/* <Box className='space-x-3'>
-                        {
-                            filterOption.map((option, index) =>
-                                <Pill key={index} withRemoveButton classNames={{
-                                    root: "bg-blue-500 text-white",
-                                    label: "text-sm"
-                                }}>{option}</Pill>
-                            )
-                        }
+        <Title fw={700} order={3} mb={"sm"}>
+          Nearby You
+        </Title>
 
-                    </Box> */}
+        <Box>
           <Box>
-            <Title fw={700} order={3}>
-              Nearby You
-            </Title>
+            <WorkerHList />
           </Box>
-        </Paper>
+        </Box>
       </Box>
+
+      <FloatingButton />
     </>
   );
 }

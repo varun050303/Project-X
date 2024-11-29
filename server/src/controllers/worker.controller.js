@@ -1,44 +1,20 @@
-import asyncHandler from '../middlewares/asyncHandler.js'
-import * as workerModel from '../models/worker.model.js'
-import { ApiError } from '../utils/apiError.js'
-import { ApiResponse } from '../utils/apiResponse.js'
+import asyncHandler from "../middlewares/asyncHandler.js";
+import prisma from "../services/prisma.service.js";
 
-export const getWorkers = asyncHandler(async (req, res) => {
-    const workers = await workerModel.getWorkers()
-    return res.status(200).json(
-        new ApiResponse(200, workers, "Data fetched successfully")
-    )
-})
+export const getWorkers = asyncHandler(async (req, res, _) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
 
-export const getWorkerById = asyncHandler(async (req, res) => {
-    const { id } = req.params
-    const worker = await workerModel.getWorkerById(id)
-    if (!worker) {
-        throw new ApiError(404, 'Worker not found'); // This error will be caught by asyncHandler and passed to errorHandler
-    }
+    const workers = await prisma.user.findMany({
+      where: { role: "WORKER" },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
 
-    return res.status(201).json(
-        new ApiResponse(201, user, "Data fetched successfully")
-    )
-})
-
-export const createWorker = asyncHandler(async (req, res) => {
-    const { userId, experienceYears, skills, hourlyRate } = req.body
-
-    const newWorker = workerModel.createWorker({ userId, experienceYears, skills, hourlyRate })
-    if (!newWorker) {
-        throw new ApiError(500, 'Some error occoured');
-    }
-
-    return res.status(201).json(
-        new ApiResponse(201, newWorker, 'Worker created successfully')
-    )
-})
-
-export const deleteWorker = asyncHandler(async (req, res) => {
-    const { userId } = req.body
-    const worker = await workerModel.deleteWorker(userId)
-    return res.status(201).json(
-        new ApiResponse(201, worker, "Worker deleted successfully")
-    )
-})
+    return res.status(200).json({ workers });
+  } catch (error) {
+    console.error("Error fetching workers:", error);
+    return res.status(500).json({ error: "Failed to fetch workers" });
+  }
+});

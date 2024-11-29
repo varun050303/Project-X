@@ -5,9 +5,9 @@ export default function PostAuthRedirect() {
   const navigate = useNavigate();
   useEffect(() => {
     const fetchUserData = async () => {
-      console.log("Inside post auth redirect");
       try {
-        const { role } = await api.get("/api/users/get-role");
+        const { data } = await api.get("/api/users/get-role");
+        const role = data.role;
         console.log(role);
         if (!role) {
           console.log("Role not found");
