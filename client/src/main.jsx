@@ -15,9 +15,11 @@ import ProtectedRoutes from "./components/Routing/ProtectedRoutes";
 import { Layout } from "./components/layout/layout";
 import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
-import '@mantine/core/styles.css';
-import '@mantine/carousel/styles.css';
+import PostAuthRedirect from "./pages/PostAuthRedirect";
+import "@mantine/core/styles.css";
+import "@mantine/carousel/styles.css";
 import "./index.css";
+import ChooseRole from "./pages/ChooseRole";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,11 +35,12 @@ const router = createBrowserRouter(
             <Route path="edit-profile" element={<EditProfile />} />
           </Route>
         </Route>
+        <Route path="/auth/callback" element={<PostAuthRedirect />} />
+        <Route path="/choose-role" element={<ChooseRole />} />
       </Route>
     </>
   )
 );
-
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

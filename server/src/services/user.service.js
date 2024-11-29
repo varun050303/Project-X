@@ -42,7 +42,6 @@ const createUser = async (user, tx) => {
       name: user.name,
       email: user.email,
       profilePic: user.profilePic,
-      role: "CLIENT",
       refreshToken: user.refresh_token,
       status: "ACTIVE",
     },

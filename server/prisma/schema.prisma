@@ -6,6 +6,7 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
+  log      = ["query", "info", "warn", "error"]
 }
 
 enum Role {
@@ -66,7 +67,7 @@ model User {
   name         String
   email        String    @unique
   profilePic   String?
-  role         Role
+  role         Role?
   age          Int?
   gender       Gender?
   refreshToken String

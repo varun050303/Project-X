@@ -55,15 +55,16 @@ export const handleGoogleAuthCallback = async (req, res) => {
   );
 
   const googleUser = await fetchGoogleUser(access_token, id_token);
-  const { gender, age } = await fetchGoogleUserMetaData(access_token);
-  // Attach additional details to the user object
-  googleUser.age = age;
-  googleUser.gender = gender;
+  // const { gender, age } = await fetchGoogleUserMetaData(access_token);
+  // // Attach additional details to the user object
+  // googleUser.age = age;
+  // googleUser.gender = gender;
   googleUser.refresh_token = refresh_token;
 
   const user = await findOrCreateUser(googleUser);
 
   cleanupAfterLogin(state);
+
   // Generate JWT token and set it as a cookie
   const token = generateToken(user);
   try {
