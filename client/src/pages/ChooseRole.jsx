@@ -1,8 +1,8 @@
 import { Box, Center, Flex, Text } from "@mantine/core";
 import React, { useState } from "react";
-import BaseCard from "../components/common/Card/BaseCard";
 import { useNavigate } from "react-router-dom";
 import { api } from "../api/axios.config";
+import RoleSelectionCard from "../components/common/Card/RoleSelectionCard";
 
 const workerImg = "/assets/roles/worker.jpeg";
 const clientImg = "/assets/roles/client.jpeg";
@@ -53,7 +53,7 @@ export default function ChooseRole() {
           justify={"center"}
           align={"center"}
         >
-          <BaseCard
+          <RoleSelectionCard
             img={workerImg}
             role="Worker"
             buttonText="Explore Jobs"
@@ -63,7 +63,7 @@ export default function ChooseRole() {
             }
             onClick={() => handleRoleSelection("WORKER")}
           />
-          <BaseCard
+          <RoleSelectionCard
             img={clientImg}
             role="Client"
             buttonText="Find Worker"

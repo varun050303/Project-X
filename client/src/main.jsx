@@ -18,8 +18,11 @@ import EditProfile from "./pages/EditProfile";
 import PostAuthRedirect from "./pages/PostAuthRedirect";
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
+import "@mantine/notifications/styles.css";
 import "./index.css";
 import ChooseRole from "./pages/ChooseRole";
+import { theme } from "./utils/mantineTheme";
+import { Notifications } from "@mantine/notifications";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -45,7 +48,8 @@ const router = createBrowserRouter(
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthProvider>
-      <MantineProvider defaultColorScheme="dark">
+      <MantineProvider theme={theme} defaultColorScheme="dark">
+        <Notifications />
         <RouterProvider router={router} />
       </MantineProvider>
     </AuthProvider>

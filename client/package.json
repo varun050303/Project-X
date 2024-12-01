@@ -10,9 +10,11 @@
     "preview": "NODE_ENV=production VITE_API_URL=https://project-x-server.up.railway.app vite preview"
   },
   "dependencies": {
-    "@mantine/carousel": "^7.12.2",
-    "@mantine/core": "^7.12.2",
-    "@mantine/hooks": "^7.12.2",
+    "@mantine/carousel": "^7.14.3",
+    "@mantine/core": "^7.14.3",
+    "@mantine/form": "^7.14.3",
+    "@mantine/hooks": "^7.14.3",
+    "@mantine/notifications": "^7.14.3",
     "axios": "^1.7.3",
     "crypto": "^1.0.1",
     "embla-carousel-react": "^7.1.0",

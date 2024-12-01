@@ -22,7 +22,7 @@ export default function ProfileCard({ name }) {
         />
       </Card.Section>
 
-      <Text fw={500} size="lg" mt="md">
+      <Text fw={500} size="lg" mt="md" tt={"capitalize"}>
         {name}
       </Text>
 

@@ -21,6 +21,13 @@ enum Gender {
   OTHER
 }
 
+enum PriorityType {
+  URGENT
+  HIGH
+  MEDIUM
+  LOW
+}
+
 enum Skill {
   PLUMBING
   ELECTRICAL
@@ -83,7 +90,6 @@ model Worker {
   id           String    @id @default(uuid())
   userId       String    @unique
   user         User      @relation(fields: [userId], references: [id])
-  assignedJobs Job[]
   skills       Skill?
   bookings     Booking[]
   availability Boolean   @default(true)
@@ -109,9 +115,10 @@ model Job {
   clientId    String
   client      User      @relation(fields: [clientId], references: [id])
   bookings    Booking[]
-  worker      Worker?   @relation(fields: [workerId], references: [id])
-  workerId    String?
   category    String?
+  // priority    PriorityType
+  // createdAt   DateTime?    @default(now())
+  // budget      Float?
 }
 
 model Booking {

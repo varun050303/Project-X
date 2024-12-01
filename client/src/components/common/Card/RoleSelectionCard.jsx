@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Badge, Button, Card, Group, Image, Text } from "@mantine/core";
-export default function BaseCard({
+export default function RoleSelectionCard({
   img,
   role,
   badge,

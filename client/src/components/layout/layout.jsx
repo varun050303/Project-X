@@ -1,15 +1,14 @@
 import { AppShell, Avatar, em } from "@mantine/core";
 import { useDisclosure, useMediaQuery } from "@mantine/hooks";
 import { Outlet } from "react-router-dom";
-import '@mantine/core/styles/AppShell.css';
+import "@mantine/core/styles/AppShell.css";
 import { useAuth } from "../../contexts/auth.context";
-import Logo from "../common/Logo";
-import Navbar from "../common/Navbar";
-
+import Navbar from "../common/HeaderComponents/Navbar";
+import Logo from "../common/HeaderComponents/Logo";
 export function Layout() {
   const [opened, { toggle }] = useDisclosure();
   const isMobile = useMediaQuery(`(max-width: ${em(780)})`);
-  const { user } = useAuth()
+  const { user } = useAuth();
   return (
     <AppShell
       header={{ height: 60 }}
@@ -21,7 +20,10 @@ export function Layout() {
       padding="lg"
       transitionDuration={400}
     >
-      <AppShell.Header className="h-auto min-h-10 flex justify-between items-center px-5 py-3" withBorder>
+      <AppShell.Header
+        className="h-auto min-h-10 flex justify-between items-center px-5 py-3"
+        withBorder
+      >
         <Logo />
         {/* Replace Burger with Avatar */}
         <Avatar
@@ -29,7 +31,7 @@ export function Layout() {
           alt="User avatar"
           radius="xl"
           size="md"
-          style={{ cursor: 'pointer' }}
+          style={{ cursor: "pointer" }}
           onClick={toggle}
           name={user?.name}
           color="initials"

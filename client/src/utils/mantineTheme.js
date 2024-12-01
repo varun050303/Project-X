@@ -1,0 +1,102 @@
+import { createTheme, NavLink, Checkbox } from "@mantine/core";
+import { Notifications } from "@mantine/notifications";
+
+export const theme = createTheme({
+  colors: {
+    primary: [
+      "#d2e8d8",
+      "#a5d1b1",
+      "#79ba8a",
+      "#4ca363",
+      "#208c3d",
+      "#098029",
+      "#007516",
+      "#006902",
+      "#005e00",
+      "#005200",
+    ],
+    secondary: [
+      "#fdf7dc",
+      "#fbefba",
+      "#fae798",
+      "#f8df76",
+      "#f7d754",
+      "#f6d342",
+      "#f5cf31",
+      "#f4cb20",
+      "#f3c70f",
+      "#f3c300",
+    ],
+    tertiary: [
+      "#ccedff",
+      "#99dbff",
+      "#66c9ff",
+      "#33b7ff",
+      "#00a6ff",
+      "#009dff",
+      "#0094ff",
+      "#008bff",
+      "#0082ff",
+      "#0079ff",
+    ],
+    quarternary: [
+      "#ffffff",
+      "#ffffff",
+      "#ffffff",
+      "#ffffff",
+      "#ffffff",
+      "#ffffff",
+      "#ffffff",
+      "#ffffff",
+      "#ffffff",
+      "#ffffff",
+    ],
+    dark: [
+      "#d9d9d9",
+      "#b4b4b4",
+      "#8f8f8f",
+      "#6a6a6a",
+      "#454545",
+      "#323232",
+      "#1f1f1f",
+      "#0d0d0d",
+      "#000000",
+      "#000000",
+    ],
+    gray: [
+      "#f8f9fa",
+      "#f1f3f5",
+      "#e9ecef",
+      "#dee2e6",
+      "#ced4da",
+      "#adb5bd",
+      "#868e96",
+      "#495057",
+      "#343a40",
+      "#212529",
+    ],
+  },
+  white: "#ffffff",
+  black: "#000000",
+  primaryColor: "primary",
+  primaryShade: 4,
+  luminanceThreshold: 0.3,
+  components: {
+    NavLink: NavLink.extend({
+      defaultProps: {
+        variant: "filled",
+      },
+    }),
+    Checkbox: Checkbox.extend({
+      defaultProps: {
+        variant: "default",
+      },
+    }),
+    Notifications: Notifications.extend({
+      defaultProps: {
+        position: "top-right",
+        autoClose: 6000,
+      },
+    }),
+  },
+});
