@@ -16,21 +16,21 @@ export default function Home() {
     <>
       <SingleBoxCarousel data={imagesUrl} withControls={false} />
 
+      <Section title="Track Your Jobs">
+        <GenericHList
+          height={240}
+          slideSize={"58.333333%"}
+          apiPath="/api/jobs/get"
+          dataKey={"jobs"}
+          CardComponent={JobCard}
+        />
+      </Section>
+
       <Section title="Nearby You">
         <GenericHList
           apiPath="/api/workers/get"
           dataKey={"workers"}
           CardComponent={ProfileCard}
-        />
-      </Section>
-
-      <Section title="Track Your Jobs">
-        <GenericHList
-          height={290}
-          slideSize={"58.333333%"}
-          apiPath="/api/jobs/get"
-          dataKey={"jobs"}
-          CardComponent={JobCard}
         />
       </Section>
 

@@ -1,5 +1,6 @@
 import React from "react";
 import { Carousel } from "@mantine/carousel";
+import EmptyState from "../common/EmptyState";
 
 export default function BaseCarousel({
   data,
@@ -14,6 +15,10 @@ export default function BaseCarousel({
   if (!CardComponent) {
     console.error("CardComponent is required for BaseCarousel");
     return null;
+  }
+
+  if (!data || data.length === 0) {
+    return <EmptyState />; // Better fallback message
   }
 
   return (

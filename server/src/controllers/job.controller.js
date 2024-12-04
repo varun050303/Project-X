@@ -5,7 +5,7 @@ import { JobStatus } from "@prisma/client";
 export const createJob = asyncHandler(async (req, res) => {
   const { id: userId } = req.user;
   if (!userId) return res.status(401).json({ message: "Not authorized" });
-  const { title, description, category } = req.body;
+  const { title, description, category, budget, priority } = req.body;
   try {
     if (!title || !description || !category) {
       return res.status(400).json({ error: "All fields are required" });
@@ -15,8 +15,10 @@ export const createJob = asyncHandler(async (req, res) => {
         title,
         description,
         category,
-        status: JobStatus.PENDING,
+        status: JobStatus.OPEN,
         clientId: userId,
+        budget,
+        priority,
       },
     });
     return res.status(201).json({ job });

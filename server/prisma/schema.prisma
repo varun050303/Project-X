@@ -24,8 +24,7 @@ enum Gender {
 enum PriorityType {
   URGENT
   HIGH
-  MEDIUM
-  LOW
+  NORMAL
 }
 
 enum Skill {
@@ -48,7 +47,8 @@ enum State {
 }
 
 enum JobStatus {
-  PENDING
+  OPEN
+  ASSIGNED
   IN_PROGRESS
   COMPLETED
   CANCELED
@@ -108,17 +108,17 @@ model Rating {
 }
 
 model Job {
-  id          String    @id @default(uuid())
+  id          String       @id @default(uuid())
   title       String
   description String
   status      JobStatus
   clientId    String
-  client      User      @relation(fields: [clientId], references: [id])
+  client      User         @relation(fields: [clientId], references: [id])
   bookings    Booking[]
   category    String?
-  // priority    PriorityType
-  // createdAt   DateTime?    @default(now())
-  // budget      Float?
+  priority    PriorityType @default(NORMAL)
+  createdAt   DateTime     @default(now())
+  budget      Float?
 }
 
 model Booking {
