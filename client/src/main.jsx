@@ -23,6 +23,9 @@ import "./index.css";
 import ChooseRole from "./pages/ChooseRole";
 import { theme } from "./utils/mantineTheme";
 import { Notifications } from "@mantine/notifications";
+import JobDetail from "./pages/JobDetail";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import NotFound from "./pages/NotFound";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -37,21 +40,28 @@ const router = createBrowserRouter(
             <Route index element={<Profile />} />
             <Route path="edit-profile" element={<EditProfile />} />
           </Route>
+          <Route path="/job/:id" element={<JobDetail />} />
         </Route>
+
         <Route path="/auth/callback" element={<PostAuthRedirect />} />
-        <Route path="/choose-role" element={<ChooseRole />} />
+        {/* <Route path="/choose-role" element={<ChooseRole />} /> */}
       </Route>
+      <Route path="*" element={<NotFound />} />
     </>
   )
 );
 
+const queryClient = new QueryClient();
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthProvider>
-      <MantineProvider theme={theme} defaultColorScheme="dark">
-        <Notifications />
-        <RouterProvider router={router} />
-      </MantineProvider>
+      <QueryClientProvider client={queryClient}>
+        <MantineProvider theme={theme} defaultColorScheme="dark">
+          <Notifications />
+          <RouterProvider router={router} />
+        </MantineProvider>
+      </QueryClientProvider>
     </AuthProvider>
   </React.StrictMode>
 );

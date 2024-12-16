@@ -76,7 +76,7 @@ export const fetchGoogleUser = async (access_token, id_token) => {
   return response.data;
 };
 
-export const generateGoogleAuthUrl = (codeChallenge, state) => {
+export const generateGoogleAuthUrl = (codeChallenge, state, role) => {
   const rootUrl = googleAuthUrl;
   const options = {
     redirect_uri: `${serverRootUri}/${googleRedirectUri}`,
@@ -110,12 +110,13 @@ const getGoogleUserContacts = async (accessToken) => {
   return response.data.connections || [];
 };
 
-export async function storeCodeVerifier(codeVerifier, state) {
+export async function storeCodeVerifier(codeVerifier, state, role) {
   try {
     await prisma.codeVerifier.create({
       data: {
         code: codeVerifier,
         state: state,
+        role: role,
       },
     });
     console.log("Code verifier stored successfully.");
@@ -136,7 +137,10 @@ export async function getCodeVerifier(state) {
       return null;
     }
 
-    return codeVerifier.code;
+    return {
+      code: codeVerifier.code,
+      role: codeVerifier.role,
+    };
   } catch (error) {
     console.error("Error retrieving code verifier:", error);
     throw error;
@@ -156,3 +160,22 @@ export async function cleanupAfterLogin(state) {
     throw error;
   }
 }
+
+export const refreshAccessToken = async (refreshToken) => {
+  try {
+    const response = await axios.post(process.env.GOOGLE_TOKEN_URL, {
+      clientId: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      grantType: "refresh_token",
+      refreshToken: refreshToken,
+    });
+
+    return {
+      access_token: response.data.access_token,
+      expires_in: response.data.expires_in,
+    };
+  } catch (error) {
+    console.error("Error refreshing access token:", error);
+    throw new Error("Failed to refresh access token");
+  }
+};

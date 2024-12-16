@@ -44,6 +44,7 @@ const FloatingButton = ({ onClick, className }) => {
         position="bottom"
         onClose={handleClose}
         title="Create a job post"
+        size={"74%"}
         overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
       >
         <JobForm onClose={handleClose} />

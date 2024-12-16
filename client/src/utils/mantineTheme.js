@@ -75,6 +75,25 @@ export const theme = createTheme({
       "#343a40",
       "#212529",
     ],
+    red: [
+      "#ffebee", // Lightest - very soft pink-red, good for backgrounds
+      "#ffcdd2", // Light red, suitable for alerts/warnings
+      "#ef9a9a", // Soft muted red, good for hover states
+      "#e57373", // Medium red, useful for non-critical errors
+      "#ef5350", // Standard error red, professional and clear
+      "#f44336", // Bold red, strong indication of error
+      "#e53935", // Deep red, for critical errors or important warnings
+      "#d32f2f", // Dark professional red, serious tone
+      "#c62828", // Very dark red, maximum emphasis
+      "#b71c1c", // Darkest red, representing extreme urgency
+    ],
+  },
+  breakpoints: {
+    xs: "24em", //480px
+    sm: "48em", //768px
+    md: "64em", //1024px
+    lg: "74em", //1184px
+    xl: "90em", //1440px
   },
   white: "#ffffff",
   black: "#000000",

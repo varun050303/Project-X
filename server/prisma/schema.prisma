@@ -68,6 +68,12 @@ enum PaymentStatus {
   REFUNDED
 }
 
+enum BidStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
 model User {
   id           String    @id @default(uuid())
   phoneNumber  Int?      @unique
@@ -94,6 +100,7 @@ model Worker {
   bookings     Booking[]
   availability Boolean   @default(true)
   ratings      Rating[]
+  bids         Bid[]
 }
 
 model Rating {
@@ -119,6 +126,11 @@ model Job {
   priority    PriorityType @default(NORMAL)
   createdAt   DateTime     @default(now())
   budget      Float?
+  city        String
+  pincode     Int
+  landmark    String
+  street      String
+  bids        Bid[]
 }
 
 model Booking {
@@ -161,4 +173,17 @@ model CodeVerifier {
   id    Int    @id @default(autoincrement())
   state String @unique
   code  String
+  role  Role?
+}
+
+model Bid {
+  id        String    @id @default(uuid())
+  message   String?
+  status    BidStatus @default(PENDING)
+  amount    Int
+  createdAt DateTime  @default(now())
+  Job       Job?      @relation(fields: [jobId], references: [id])
+  jobId     String?
+  Worker    Worker?   @relation(fields: [workerId], references: [id])
+  workerId  String?
 }

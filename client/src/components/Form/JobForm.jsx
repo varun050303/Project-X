@@ -6,6 +6,7 @@ import {
   Box,
   Button,
   Chip,
+  Fieldset,
   Group,
   NativeSelect,
   NumberInput,
@@ -44,6 +45,10 @@ export default function JobForm({ onClose }) {
       category: skillOptions[0],
       priority: PRIORITIES.NORMAL,
       budget: 100,
+      street: "",
+      city: "",
+      pincode: "",
+      landmark: "",
     },
     validate: {
       title: (value) => (value.trim() === "" ? "Job title is required" : null),
@@ -80,36 +85,81 @@ export default function JobForm({ onClose }) {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <form
-        onSubmit={form.onSubmit((values) => handleSubmit(values))}
-        className="space-y-4"
-      >
-        <TextInput
-          placeholder="ex: Kitchen Tab Leak"
-          label="Job Title"
-          required
-          {...form.getInputProps("title")}
-        />
-        <Textarea
-          label="Description"
-          placeholder="ex: I need a plumber to fix my kitchen tab leak"
-          required
-          {...form.getInputProps("description")}
-        />
-        <Group justify="space-between">
-          <NativeSelect
-            label="Category"
-            data={skillOptions}
-            required
-            {...form.getInputProps("category")}
-          />
-          <NumberInput
-            leftSection="₹"
-            label="Budget (optional)"
-            placeholder="Amount in INR(₹)"
-            {...form.getInputProps("budget")}
-          />
-        </Group>
+      <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
+        <Fieldset legend="Job Details">
+          <Group>
+            <TextInput
+              placeholder="ex: Kitchen Tab Leak"
+              label="Title"
+              required
+              w={"100%"}
+              {...form.getInputProps("title")}
+            />
+            <Textarea
+              label="Description"
+              placeholder="ex: I need a plumber to fix my kitchen tab leak"
+              required
+              w={"100%"}
+              {...form.getInputProps("description")}
+            />
+            <Group justify="space-between">
+              <NativeSelect
+                label="Category"
+                w={"40%"}
+                data={skillOptions}
+                required
+                {...form.getInputProps("category")}
+              />
+              <NumberInput
+                w={"50%"}
+                leftSection="₹"
+                label="Budget (optional)"
+                placeholder="Amount in INR(₹)"
+                {...form.getInputProps("budget")}
+              />
+            </Group>
+          </Group>
+        </Fieldset>
+
+        <Fieldset
+          legend="Address"
+          styles={{
+            root: {
+              marginBottom: "1rem",
+              marginTop: "1.5rem",
+            },
+          }}
+        >
+          <Group>
+            <TextInput
+              w={"40%"}
+              label="H.No/ Street"
+              required
+              placeholder="123, xyz street"
+              {...form.getInputProps("street")}
+            />
+            <TextInput
+              required
+              label="City"
+              placeholder="ex: Muzaffarnagar"
+              {...form.getInputProps("city")}
+            />
+            <NumberInput
+              required
+              hideControls
+              w={"40%"}
+              label="Pincode"
+              placeholder="ex: 224001"
+              {...form.getInputProps("pincode")}
+            />
+            <TextInput
+              required
+              label="Landmark"
+              placeholder="ex: near the bus stand"
+              {...form.getInputProps("landmark")}
+            />
+          </Group>
+        </Fieldset>
 
         <Group justify="flex-start" align="self-end">
           <Chip.Group
@@ -117,7 +167,7 @@ export default function JobForm({ onClose }) {
             multiple={false}
             {...form.getInputProps("priority")}
           >
-            <Group mt={24}>
+            <Group mt={10}>
               <Chip autoContrast color="orange" value={"URGENT"}>
                 Urgent
               </Chip>
@@ -135,10 +185,9 @@ export default function JobForm({ onClose }) {
             label="Mark your job post as per your urgency of work it can also affect your budget"
           />
         </Group>
-        <Box fullWidth className="text-end">
-          <Button type="submit" mt={10}>
-            Submit Job
-          </Button>
+
+        <Box className="text-end">
+          <Button type="submit">Submit Job</Button>
         </Box>
       </form>
     </div>

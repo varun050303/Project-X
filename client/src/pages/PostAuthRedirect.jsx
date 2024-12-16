@@ -8,12 +8,11 @@ export default function PostAuthRedirect() {
       try {
         const { data } = await api.get("/api/users/get-role");
         const role = data.role;
-        console.log(role);
         if (!role) {
           console.log("Role not found");
-          navigate("/choose-role");
+          navigate("/not-found");
         } else if (role === "WORKER") {
-          navigate("/worker-dashboard");
+          navigate("/home");
         } else {
           navigate("/");
         }

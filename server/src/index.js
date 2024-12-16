@@ -3,6 +3,7 @@ import userRoutes from "./routes/user.routes.js";
 import workerRoutes from "./routes/worker.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import jobRoutes from "./routes/job.routes.js";
+import bidRoutes from "./routes/bid.routes.js";
 import helmet from "helmet";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -28,6 +29,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/workers", workerRoutes);
 app.use("/auth", authRoutes);
 app.use("/api/jobs", jobRoutes);
+app.use("/api/bids", bidRoutes);
 app.get("/ok", (_, res) => {
   res.send("Hie");
 });

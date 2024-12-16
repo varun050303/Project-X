@@ -23,6 +23,7 @@
 // };
 
 import { PrismaClient } from "@prisma/client";
+import { ApiError } from "../utils/apiError.js";
 
 const prisma = new PrismaClient();
 
@@ -36,6 +37,16 @@ const findUserByEmail = async (email) => {
   return user;
 };
 
+const findWorkerByUserId = async (userId) => {
+  const worker = await prisma.worker.findUnique({
+    where: {
+      userId: userId, // Find worker by userId (since worker is linked to user)
+    },
+  });
+
+  return worker;
+};
+
 const createUser = async (user, tx) => {
   const newUser = await tx.user.create({
     data: {
@@ -44,8 +55,20 @@ const createUser = async (user, tx) => {
       profilePic: user.profilePic,
       refreshToken: user.refresh_token,
       status: "ACTIVE",
+      role: user.role,
     },
   });
+
+  if (user.role === "WORKER") {
+    const existingWorker = await findWorkerByUserId(newUser.id);
+    if (!existingWorker) {
+      await tx.worker.create({
+        data: {
+          userId: newUser.id, // Link the worker to the user
+        },
+      });
+    }
+  }
 
   return newUser;
 };
@@ -60,4 +83,12 @@ export const findOrCreateUser = async (user) => {
     return newUser;
   });
   return transaction;
+};
+
+const validRoles = ["CLIENT", "WORKER"];
+
+export const validateRole = (role) => {
+  if (!validRoles.includes(role)) {
+    throw new ApiError(400, `Invalid role: ${role}`);
+  }
 };
