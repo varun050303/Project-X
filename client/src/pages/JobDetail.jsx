@@ -2,16 +2,10 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { ScrollArea, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { fetchJobById } from "../features/jobs/api/jobs.api";
 import { useAuth } from "../contexts/auth.context";
 import { useForm } from "@mantine/form";
-import {
-  createBid,
-  checkBidStatus,
-  fetchAllBids,
-} from "../features/bids/api/bid.api";
-import { notifications } from "@mantine/notifications";
 import JobBudget from "../features/jobs/components/JobBudget";
 import JobStatusPanel from "../features/jobs/components/JobStatusPanel";
 import JobInfo from "../features/jobs/components/JobInfo";
@@ -20,10 +14,34 @@ import BiddingCard from "../features/bids/components/BiddingCard";
 import BiddingSection from "../features/bids/components/BiddingSection";
 import PlaceBidButton from "../features/bids/components/PlaceBidButton";
 import PlaceBidDrawer from "../features/bids/components/PlaceBidDrawer";
+import {
+  useBidsFetch,
+  useBidStatus,
+  useSubmitBid,
+} from "../features/bids/hooks/useBid";
 export default function JobDetail() {
   const { id } = useParams();
   const { user } = useAuth();
-  const queryClient = useQueryClient();
+
+  const [opened, { open, close: closeDrawer }] = useDisclosure(false);
+
+  const {
+    data: hasBid,
+    isLoading: isCheckingBid,
+    error: bidCheckError,
+  } = useBidStatus(id, user.role);
+
+  const {
+    data: bids,
+    isLoading: isLoadingBids,
+    error: bidsError,
+  } = useBidsFetch(id, user.role);
+
+  const {
+    mutate: submitBid,
+    isLoading: isSubmittingBid,
+    error: submitBidError,
+  } = useSubmitBid(id, closeDrawer);
 
   const {
     data: job,
@@ -35,30 +53,6 @@ export default function JobDetail() {
     select: (data) => data.job,
   });
 
-  const {
-    data: hasBid,
-    isLoading: isBidLoading,
-    error: bidError,
-  } = useQuery({
-    queryKey: ["bid", id],
-    queryFn: () => checkBidStatus(id),
-    enabled: user.role === "WORKER",
-    select: (data) => data.hasBid,
-  });
-
-  const {
-    data: bids,
-    isLoading: isBidsLoading,
-    error: bidsError,
-  } = useQuery({
-    queryKey: ["bids", id],
-    queryFn: () => fetchAllBids(id),
-    enabled: user.role === "CLIENT",
-    select: (data) => data.bids,
-  });
-
-  const [opened, { open, close }] = useDisclosure(false);
-
   const form = useForm({
     initialValues: {
       message: "",
@@ -67,25 +61,6 @@ export default function JobDetail() {
     validate: {
       amount: (value) =>
         value <= 0 ? "Amount should be greater than 0" : null,
-    },
-  });
-
-  const { mutate: submitBid, isLoading: isSubmitting } = useMutation({
-    mutationFn: createBid,
-    onSuccess: () => {
-      queryClient.invalidateQueries(["bids", id]);
-      close();
-      notifications.show({
-        title: "Bid placed successfully",
-        color: "green",
-        position: "top-right",
-        autoClose: 3000,
-      });
-      form.reset();
-    },
-
-    onError: (jobError) => {
-      console.error("Failed to post your bid", jobError);
     },
   });
 
@@ -99,11 +74,11 @@ export default function JobDetail() {
     submitBid(bidData);
   };
 
-  if (isJobLoading || isBidLoading || isBidsLoading) {
+  if (isJobLoading || isCheckingBid || isLoadingBids) {
     return <Text>Loading job details...</Text>;
   }
 
-  if (jobError || bidError || bidsError) {
+  if (jobError || bidCheckError || bidsError) {
     return (
       <Text c="red">Failed to load job or bids. Please try again later.</Text>
     );

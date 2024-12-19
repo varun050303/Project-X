@@ -18,10 +18,11 @@ router.get(
   jobController.getAllJobs
 );
 router.get("/get/:id", authenticate, jobController.getJobById);
+
 router.delete(
   "/delete/:id",
-  authorize("CLIENT", "ADMIN"),
   authenticate,
+  authorize("CLIENT", "ADMIN"),
   jobController.deleteJobById
 );
 

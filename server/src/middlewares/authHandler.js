@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import { ApiError } from "../utils/apiError.js";
-
 const authCookieName = process.env.AUTH_COOKIE_NAME;
 export const authenticate = (req, _, next) => {
   const token = req.cookies[authCookieName];
@@ -19,7 +18,7 @@ export const authenticate = (req, _, next) => {
 };
 
 export const authorize = (...roles) => {
-  return (req, res, next) => {
+  return (req, _, next) => {
     if (!roles.includes(req.user.role)) {
       throw new ApiError(403, "Access denied.");
     }
