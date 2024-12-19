@@ -20,14 +20,14 @@ const useBidsFetch = (jobId, userRole) => {
   });
 };
 
-const useSubmitBid = (jobId, close) => {
+const useSubmitBid = (jobId, closeDrawer) => {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: createBid,
     onSuccess: () => {
       queryClient.invalidateQueries(["bids", jobId]);
-      close();
+      closeDrawer();
       notifications.show({
         title: "Bid placed successfully",
         message: "Your bid has been placed successfully.",

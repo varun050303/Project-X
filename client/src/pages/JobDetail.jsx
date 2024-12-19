@@ -107,7 +107,11 @@ export default function JobDetail() {
 
       {user.role === "WORKER" && (
         <>
-          <PlaceBidButton hasBid={!!hasBid} open={open} />
+          <PlaceBidButton
+            hasBid={!!hasBid}
+            open={open}
+            loading={isSubmittingBid}
+          />
           <PlaceBidDrawer
             opened={opened}
             form={form}

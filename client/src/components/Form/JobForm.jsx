@@ -16,6 +16,7 @@ import {
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import QuestionMarkTooltipIcon from "../common/QuestionMarkTooltip";
+import { usePostJob } from "../../features/jobs/hooks/useJob";
 
 const SKILLS = {
   PLUMBING: "Plumbing",
@@ -35,6 +36,7 @@ const PRIORITIES = {
 };
 
 export default function JobForm({ onClose }) {
+  const { mutate: postJob } = usePostJob();
   const skillOptions = Object.values(SKILLS);
   const priorityOptions = Object.values(PRIORITIES);
   const [opened, setIsOpened] = useState(false);
@@ -61,26 +63,9 @@ export default function JobForm({ onClose }) {
     setIsOpened(!opened);
   }
 
-  const handleSubmit = async (values) => {
-    try {
-      await api.post("/api/jobs/create", values);
-      onClose();
-      notifications.show({
-        title: "Job Posted Successfully",
-        message: "Will be visible to workers soon",
-        color: "green",
-        position: "top-right",
-      });
-    } catch (err) {
-      console.error("An error occurred:", err);
-      notifications.show({
-        title: "Something went wrong",
-        message: "Try again filling the form",
-        color: "red",
-        position: "top-right",
-        autoClose: 3000,
-      });
-    }
+  const handleSubmit = (values) => {
+    onClose();
+    postJob(values);
   };
 
   return (

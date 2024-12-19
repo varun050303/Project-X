@@ -104,6 +104,7 @@ export const getAllJobs = asyncHandler(async (req, res) => {
     const jobs = await prisma.job.findMany({
       skip: (page - 1) * limit,
       take: limit,
+      orderBy: { createdAt: "desc" },
     });
 
     return res.status(200).json({ jobs });

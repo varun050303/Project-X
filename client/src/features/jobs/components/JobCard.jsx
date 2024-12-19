@@ -9,11 +9,12 @@ import {
 } from "@mantine/core";
 import { IoIosArrowForward } from "react-icons/io";
 import { FiTrash } from "react-icons/fi";
-import { api } from "../../../api/axios.config";
 import { notifications } from "@mantine/notifications";
 import { useDisclosure } from "@mantine/hooks";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../contexts/auth.context";
+import { api } from "../../../api/axios.config";
+import { useDeleteJob } from "../hooks/useJob";
 export default function JobCard({
   title,
   description,
@@ -24,25 +25,10 @@ export default function JobCard({
   id,
 }) {
   const [opened, { open, close }] = useDisclosure(false);
+  const { mutate: deleteJob, error } = useDeleteJob();
   async function handleJobDelete() {
     close();
-    try {
-      await api.delete(`/api/jobs/delete/${id}`);
-      notifications.show({
-        title: "Job Deleted Successfully",
-        color: "green",
-        position: "top-right",
-        autoClose: 3000,
-      });
-    } catch (err) {
-      notifications.show({
-        title: "Something went wrong",
-        message: "Try again",
-        color: "red",
-        position: "top-right",
-        autoClose: 3000,
-      });
-    }
+    await deleteJob(id);
   }
 
   function confirmDelete() {

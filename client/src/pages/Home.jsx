@@ -4,7 +4,7 @@ import SingleBoxCarousel from "../components/carousel/SingleBoxCarousel";
 import Section from "../components/common/Section";
 import GenericHList from "../components/common/GenericHList";
 import ProfileCard from "../components/common/Card/ProfileCard";
-import JobCard from "../components/common/Card/JobCard";
+import JobCard from "../features/jobs/components/JobCard";
 import { useAuth } from "../contexts/auth.context";
 const imagesUrl = [
   "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/images/bg-3.png",

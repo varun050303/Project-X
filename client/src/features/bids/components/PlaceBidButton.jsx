@@ -1,7 +1,7 @@
 import { Box, Button } from "@mantine/core";
 import React from "react";
 
-export default function PlaceBidButton({ hasBid, open }) {
+export default function PlaceBidButton({ hasBid, open, loading }) {
   return (
     <Box pos={"fixed"} bottom={20} left={0} right={0} p={20}>
       <Button
@@ -12,6 +12,7 @@ export default function PlaceBidButton({ hasBid, open }) {
         onClick={open}
         disabled={hasBid}
         aria-label={hasBid ? "Bid already placed" : "Place a bid"}
+        loading={loading}
       >
         {hasBid ? "Bid Placed" : "Place Bid"}
       </Button>
