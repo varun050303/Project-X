@@ -23,9 +23,10 @@ import "./index.css";
 import ChooseRole from "./pages/ChooseRole";
 import { theme } from "./utils/mantineTheme";
 import { Notifications } from "@mantine/notifications";
-import JobDetail from "./pages/JobDetail";
+import JobDetail from "./pages/JobDetail.jsx";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import NotFound from "./pages/NotFound";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -61,6 +62,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Notifications />
           <RouterProvider router={router} />
         </MantineProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </AuthProvider>
   </React.StrictMode>

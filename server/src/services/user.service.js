@@ -24,8 +24,7 @@
 
 import { PrismaClient } from "@prisma/client";
 import { ApiError } from "../utils/apiError.js";
-
-const prisma = new PrismaClient();
+import prisma from "./prisma.service.js";
 
 const findUserByEmail = async (email) => {
   const user = await prisma.user.findUnique({

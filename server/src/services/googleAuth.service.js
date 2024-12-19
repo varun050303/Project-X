@@ -6,9 +6,7 @@ const googleRedirectUri = process.env.GOOGLE_REDIRECT_URI;
 const serverRootUri = process.env.SERVER_ROOT;
 const googleAuthUrl = process.env.GOOGLE_OAUTH_URL;
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient();
+import prisma from "./prisma.service.js";
 
 export const fetchGoogleUserMetaData = async (accessToken) => {
   try {

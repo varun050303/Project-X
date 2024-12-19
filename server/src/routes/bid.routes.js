@@ -25,4 +25,11 @@ router.get(
   bidController.getAllBids
 );
 
+router.post(
+  "/action",
+  authenticate,
+  authorize("CLIENT"),
+  bidController.handleBidAcceptance
+);
+
 export default router;

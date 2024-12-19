@@ -1,6 +1,8 @@
 import asyncHandler from "../middlewares/asyncHandler.js";
 import { ApiError } from "../utils/apiError.js";
 import DOMPurify from "isomorphic-dompurify";
+import prisma from "../services/prisma.service.js";
+import { BidStatus } from "@prisma/client";
 
 export const createBid = asyncHandler(async (req, res) => {
   const { jobId, amount, message } = req.body;
@@ -99,9 +101,10 @@ export const getAllBids = asyncHandler(async (req, res) => {
     include: {
       Worker: {
         include: {
+          id: false,
+          userId: false,
           user: {
             select: {
-              id: true,
               name: true,
               profilePic: true,
             },
@@ -113,3 +116,70 @@ export const getAllBids = asyncHandler(async (req, res) => {
 
   return res.status(200).json({ bids });
 });
+
+export const handleBidAcceptance = asyncHandler(async (req, res) => {
+  const { id: userId } = req.user;
+  const { jobId, workerId, action } = req.query;
+
+  const sanitizedJobId = DOMPurify.sanitize(jobId);
+  const sanitizedWorkerId = DOMPurify.sanitize(workerId);
+  const sanitizedAction = DOMPurify.sanitize(action);
+
+  const transaction = [
+    updateBidStatus(sanitizedAction, sanitizedJobId, sanitizedWorkerId),
+  ];
+  if (sanitizedAction === BidStatus.ACCEPTED) {
+    transaction.push(
+      createBookingForAcceptenceBid(userId, sanitizedJobId, sanitizedWorkerId)
+    );
+  }
+  await prisma.$transaction(transaction);
+
+  return res
+    .status(200)
+    .json({ message: "Bid accepted and booking created successfully." });
+});
+
+const updateBidStatus = asyncHandler(async (action, jobId, workerId) => {
+  if (action === BidStatus.ACCEPTED) {
+    await prisma.$transaction([
+      prisma.bid.updateMany({
+        where: {
+          jobId,
+          NOT: { workerId },
+        },
+        data: { status: BidStatus.REJECTED },
+      }),
+
+      prisma.bid.updateMany({
+        where: {
+          jobId,
+          workerId,
+        },
+        data: { status: BidStatus.ACCEPTED },
+      }),
+    ]);
+  } else if (sanitizedAction === BidStatus.REJECTED) {
+    await prisma.bid.updateMany({
+      where: {
+        jobId,
+        workerId,
+      },
+      data: { status: BidStatus.REJECTED },
+    });
+  } else {
+    return new ApiError(400, "Invalid action");
+  }
+});
+
+const createBookingForAcceptenceBid = asyncHandler(
+  async (userId, jobId, workerId) => {
+    await prisma.booking.create({
+      data: {
+        jobId,
+        workerId,
+        clientId: userId,
+      },
+    });
+  }
+);

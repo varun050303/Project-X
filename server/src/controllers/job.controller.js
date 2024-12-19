@@ -58,6 +58,7 @@ export const getMyJobs = asyncHandler(async (req, res) => {
       },
       skip: (page - 1) * limit,
       take: limit,
+      orderBy: { createdAt: "desc" },
     });
     return res.status(200).json({ jobs });
   } catch (error) {
