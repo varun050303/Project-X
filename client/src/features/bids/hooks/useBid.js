@@ -1,5 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { checkBidStatus, fetchAllBids, createBid } from "../api/bid.api";
+import {
+  checkBidStatus,
+  fetchAllBids,
+  createBid,
+  updateBidStatus,
+} from "../api/bid.api";
 import { notifications } from "@mantine/notifications";
 
 const useBidStatus = (jobId, userRole) => {
@@ -43,4 +48,18 @@ const useSubmitBid = (jobId, closeDrawer) => {
   });
 };
 
-export { useBidStatus, useBidsFetch, useSubmitBid };
+const useBidAction = (jobId) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: updateBidStatus,
+    onSuccess: () => {
+      queryClient.invalidateQueries(["bids", jobId]);
+      notifications.show({
+        title: "Bid action successful",
+        message: "Bid action has been performed successfully.",
+      });
+    },
+  });
+};
+
+export { useBidStatus, useBidsFetch, useSubmitBid, useBidAction };

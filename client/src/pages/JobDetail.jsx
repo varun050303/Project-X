@@ -2,8 +2,6 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import { ScrollArea, Text } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { useQuery } from "@tanstack/react-query";
-import { fetchJobById } from "../features/jobs/api/jobs.api";
 import { useAuth } from "../contexts/auth.context";
 import { useForm } from "@mantine/form";
 import JobBudget from "../features/jobs/components/JobBudget";
@@ -19,11 +17,14 @@ import {
   useBidStatus,
   useSubmitBid,
 } from "../features/bids/hooks/useBid";
+import { useGetJob } from "../features/jobs/hooks/useJob";
 export default function JobDetail() {
   const { id } = useParams();
   const { user } = useAuth();
 
   const [opened, { open, close: closeDrawer }] = useDisclosure(false);
+
+  const { data: job, isLoading: isJobLoading, error: jobError } = useGetJob(id);
 
   const {
     data: hasBid,
@@ -42,16 +43,6 @@ export default function JobDetail() {
     isLoading: isSubmittingBid,
     error: submitBidError,
   } = useSubmitBid(id, closeDrawer);
-
-  const {
-    data: job,
-    isLoading: isJobLoading,
-    error: jobError,
-  } = useQuery({
-    queryKey: ["job", id],
-    queryFn: () => fetchJobById(id),
-    select: (data) => data.job,
-  });
 
   const form = useForm({
     initialValues: {
@@ -99,13 +90,14 @@ export default function JobDetail() {
           {!bids && <Text my={"md"}>No Bidders yet</Text>}
           <ScrollArea h={"auto"} mah={500}>
             {bids.map((bid) => {
-              return <BiddingCard key={bid.id} bid={bid} />;
+              console.log(bid);
+              return <BiddingCard key={bid.id} bid={bid} jobId={id} />;
             })}
           </ScrollArea>
         </BiddingSection>
       )}
 
-      {user.role === "WORKER" && (
+      {user.role === "WORKER" && job.status === "open" && (
         <>
           <PlaceBidButton
             hasBid={!!hasBid}

@@ -15,10 +15,11 @@ const StatusBox = ({ children }) => (
   </Grid.Col>
 );
 const JobCategory = ({ category }) => {
+  const jobCategory = category.charAt(0) + category.slice(1).toLowerCase();
   return (
     <StatusBox>
-      <CategoryIcon category={category} />
-      <Text fw={700}>{category}</Text>
+      <CategoryIcon category={jobCategory} />
+      <Text fw={700}>{jobCategory}</Text>
     </StatusBox>
   );
 };

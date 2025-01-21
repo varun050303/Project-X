@@ -11,9 +11,11 @@ const QuestionMarkTooltipIcon = forwardRef(
       offset={20}
       multiline={multiline}
       w={width}
+      withArrow
+      arrowSize={8}
     >
       <div ref={ref}>
-        <GoQuestion size={23} onClick={handleToolTip} />
+        <GoQuestion size={18} onClick={handleToolTip} />
       </div>
     </Tooltip>
   )

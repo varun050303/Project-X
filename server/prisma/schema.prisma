@@ -96,7 +96,7 @@ model Worker {
   id           String    @id @default(uuid())
   userId       String    @unique
   user         User      @relation(fields: [userId], references: [id])
-  skills       Skill?
+  skills       Skill[]
   bookings     Booking[]
   availability Boolean   @default(true)
   ratings      Rating[]
@@ -122,15 +122,16 @@ model Job {
   clientId    String
   client      User         @relation(fields: [clientId], references: [id])
   bookings    Booking[]
-  category    String?
+  category    Skill?
   priority    PriorityType @default(NORMAL)
-  createdAt   DateTime     @default(now())
   budget      Float?
   city        String
   pincode     Int
   landmark    String
   street      String
   bids        Bid[]
+  createdAt   DateTime     @default(now())
+  bookingDate DateTime?
 }
 
 model Booking {
@@ -141,19 +142,18 @@ model Booking {
   bookingDate DateTime
   client      User          @relation(fields: [clientId], references: [id])
   job         Job           @relation(fields: [jobId], references: [id])
-  worker      Worker?       @relation(fields: [workerId], references: [id])
+  worker      Worker        @relation(fields: [workerId], references: [id])
   payment     Payment[]
   status      BookingStatus @default(ACCEPTED)
 }
 
 model Payment {
-  id            String        @id @default(uuid())
-  bookingId     String
-  amount        Float
-  booking       Booking       @relation(fields: [bookingId], references: [id])
-  status        PaymentStatus
-  paymentDate   DateTime      @default(now())
-  paymentStatus PaymentStatus
+  id          String        @id @default(uuid())
+  bookingId   String
+  amount      Float
+  booking     Booking       @relation(fields: [bookingId], references: [id])
+  status      PaymentStatus
+  paymentDate DateTime      @default(now())
 }
 
 model Address {
@@ -182,8 +182,8 @@ model Bid {
   status    BidStatus @default(PENDING)
   amount    Int
   createdAt DateTime  @default(now())
-  Job       Job?      @relation(fields: [jobId], references: [id])
-  jobId     String?
-  Worker    Worker?   @relation(fields: [workerId], references: [id])
-  workerId  String?
+  job       Job       @relation(fields: [jobId], references: [id])
+  jobId     String
+  worker    Worker    @relation(fields: [workerId], references: [id])
+  workerId  String
 }

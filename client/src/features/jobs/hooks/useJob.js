@@ -1,5 +1,5 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createJob, deleteJob } from "../api/jobs.api";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { createJob, deleteJob, fetchJobById } from "../api/jobs.api";
 import { notifications } from "@mantine/notifications";
 
 const usePostJob = () => {
@@ -50,4 +50,11 @@ const useDeleteJob = () => {
   });
 };
 
-export { useDeleteJob, usePostJob };
+const useGetJob = (id) => {
+  return useQuery({
+    queryKey: ["job", id],
+    queryFn: () => fetchJobById(id),
+    select: (data) => data.job,
+  });
+};
+export { useDeleteJob, usePostJob, useGetJob };

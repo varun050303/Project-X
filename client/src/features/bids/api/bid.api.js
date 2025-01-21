@@ -15,8 +15,8 @@ export const fetchAllBids = async (id) => {
   return data;
 };
 
-export const updateBidSatus = async ({ jobId, workerId, action }) => {
-  const { data } = await api.patch(
+export const updateBidStatus = async ({ jobId, workerId, action }) => {
+  const { data } = await api.post(
     `/api/bids/action?workerId=${workerId}&jobId=${jobId}&action=${action}`
   );
   return data;

@@ -1,8 +1,8 @@
-import { Drawer, Button } from "@mantine/core";
+import { Drawer, Button, ActionIcon } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import React, { useState } from "react";
 import { IoMdAdd } from "react-icons/io";
-import JobForm from "../Form/JobForm";
+import JobForm from "../../features/jobs/components/JobForm";
 
 const FloatingButton = ({ onClick, className }) => {
   const [isRotated, setIsRotated] = useState(false);
@@ -22,22 +22,29 @@ const FloatingButton = ({ onClick, className }) => {
 
   return (
     <>
-      <Button
+      <ActionIcon
         onClick={handleClick}
-        className={`fixed bottom-6 right-6 z-50
-        rounded-full 
-        w-14 h-14 
-        flex items-center justify-center 
-        shadow-lg 
-        border-0
-        ${className}`}
+        variant="filled"
+        size="xl"
+        radius="xl"
+        style={{
+          width: "3.5rem", // equivalent to w-14
+          height: "3.5rem", // equivalent to h-14
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          border: "none",
+          position: "fixed",
+          bottom: "1.5rem",
+          right: "1.5rem",
+        }}
       >
         <IoMdAdd
           className={`text-2xl transition-transform duration-300 ease-in-out ${
             isRotated ? "-rotate-45" : ""
           }`}
         />
-      </Button>
+      </ActionIcon>
 
       <Drawer
         opened={opened}

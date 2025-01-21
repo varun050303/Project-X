@@ -15,7 +15,9 @@ export const createJob = asyncHandler(async (req, res) => {
     street,
     pincode,
     landmark,
+    bookingDate,
   } = req.body;
+
   try {
     if (!title || !description || !category) {
       return res.status(400).json({ error: "All fields are required" });
@@ -33,6 +35,7 @@ export const createJob = asyncHandler(async (req, res) => {
         street,
         pincode,
         landmark,
+        bookingDate,
       },
     });
     return res.status(201).json({ job });
@@ -113,3 +116,14 @@ export const getAllJobs = asyncHandler(async (req, res) => {
     return res.status(500).json({ error: "Failed to fetch jobs" });
   }
 });
+
+export const updateJobStatus = (jobId, status) => {
+  return prisma.job.update({
+    where: {
+      id: jobId,
+    },
+    data: {
+      status,
+    },
+  });
+};

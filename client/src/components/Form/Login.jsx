@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import OAuth from "../OAuth/OAuth.jsx";
 
 export default function Login() {

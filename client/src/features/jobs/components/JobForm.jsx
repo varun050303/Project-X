@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { useForm } from "@mantine/form";
-import { api } from "../../api/axios.config";
-import { GoQuestion } from "react-icons/go";
 import {
   Box,
   Button,
@@ -10,24 +8,26 @@ import {
   Group,
   NativeSelect,
   NumberInput,
+  SegmentedControl,
   Textarea,
   TextInput,
   Tooltip,
 } from "@mantine/core";
-import { notifications } from "@mantine/notifications";
-import QuestionMarkTooltipIcon from "../common/QuestionMarkTooltip";
-import { usePostJob } from "../../features/jobs/hooks/useJob";
+import { DateInput, DatePicker } from "@mantine/dates";
+import QuestionMarkTooltipIcon from "../../../components/common/QuestionMarkTooltip";
+import { usePostJob } from "../hooks/useJob";
 
 const SKILLS = {
-  PLUMBING: "Plumbing",
-  ELECTRICAL: "Electrical",
-  CARPENTRY: "Carpentry",
-  PAINTING: "Painting",
-  CLEANING: "Cleaning",
-  MECHANICAL: "Mechanical",
-  PLASTERING: "Plastering",
-  MASONRY: "Masonry",
+  Plumbing: "PLUMBING",
+  Electrical: "ELECTRICAL",
+  Carpentry: "CARPENTRY",
+  Painting: "PAINTING",
+  Cleaning: "CLEANING",
+  Mechanical: "MECHANICAL",
+  Plastering: "PLASTERING",
+  Masonry: "MASONRY",
   HVAC: "HVAC",
+  other: "OTHER",
 };
 
 const PRIORITIES = {
@@ -37,25 +37,29 @@ const PRIORITIES = {
 
 export default function JobForm({ onClose }) {
   const { mutate: postJob } = usePostJob();
-  const skillOptions = Object.values(SKILLS);
-  const priorityOptions = Object.values(PRIORITIES);
+  const skillOptions = Object.keys(SKILLS);
   const [opened, setIsOpened] = useState(false);
   const form = useForm({
     initialValues: {
       title: "",
       description: "",
-      category: skillOptions[0],
-      priority: PRIORITIES.NORMAL,
+      category: skillOptions.length > 0 ? skillOptions[0] : "",
+      priority: "NORMAL",
       budget: 100,
       street: "",
       city: "",
       pincode: "",
       landmark: "",
+      bookingDate: new Date(),
     },
     validate: {
       title: (value) => (value.trim() === "" ? "Job title is required" : null),
       description: (value) =>
         value.trim() === "" ? "Description is required" : null,
+      bookingDate: (value) =>
+        new Date(value) < new Date()
+          ? "Booking date cannot be in the past"
+          : null,
     },
   });
 
@@ -64,8 +68,12 @@ export default function JobForm({ onClose }) {
   }
 
   const handleSubmit = (values) => {
+    const data = {
+      ...values,
+      category: SKILLS[values.category],
+    };
     onClose();
-    postJob(values);
+    postJob(data);
   };
 
   return (
@@ -74,7 +82,7 @@ export default function JobForm({ onClose }) {
         <Fieldset legend="Job Details">
           <Group>
             <TextInput
-              placeholder="ex: Kitchen Tab Leak"
+              placeholder="Kitchen Tab Leak"
               label="Title"
               required
               w={"100%"}
@@ -82,10 +90,14 @@ export default function JobForm({ onClose }) {
             />
             <Textarea
               label="Description"
-              placeholder="ex: I need a plumber to fix my kitchen tab leak"
+              placeholder="I need a plumber to fix my kitchen tab leak"
               required
               w={"100%"}
               {...form.getInputProps("description")}
+            />
+            <DateInput
+              label="Booking Date"
+              {...form.getInputProps("bookingDate")}
             />
             <Group justify="space-between">
               <NativeSelect
@@ -98,7 +110,7 @@ export default function JobForm({ onClose }) {
               <NumberInput
                 w={"50%"}
                 leftSection="₹"
-                label="Budget (optional)"
+                label="Budget"
                 placeholder="Amount in INR(₹)"
                 {...form.getInputProps("budget")}
               />
@@ -126,7 +138,7 @@ export default function JobForm({ onClose }) {
             <TextInput
               required
               label="City"
-              placeholder="ex: Muzaffarnagar"
+              placeholder="Muzaffarnagar"
               {...form.getInputProps("city")}
             />
             <NumberInput
@@ -134,34 +146,26 @@ export default function JobForm({ onClose }) {
               hideControls
               w={"40%"}
               label="Pincode"
-              placeholder="ex: 224001"
+              placeholder="224001"
               {...form.getInputProps("pincode")}
             />
             <TextInput
               required
               label="Landmark"
-              placeholder="ex: near the bus stand"
+              placeholder="near the bus stand"
               {...form.getInputProps("landmark")}
             />
           </Group>
         </Fieldset>
 
-        <Group justify="flex-start" align="self-end">
-          <Chip.Group
-            label="Priority"
-            multiple={false}
+        <Group justify="flex-start" align="center" ml={10}>
+          <SegmentedControl
             {...form.getInputProps("priority")}
-          >
-            <Group mt={10}>
-              <Chip autoContrast color="orange" value={"URGENT"}>
-                Urgent
-              </Chip>
-              <Chip autoContrast color="yellow" value={"NORMAL"}>
-                Normal
-              </Chip>
-            </Group>
-          </Chip.Group>
-
+            data={[
+              { value: "URGENT", label: "Urgent" },
+              { value: "NORMAL", label: "Normal" },
+            ]}
+          />
           <QuestionMarkTooltipIcon
             handleToolTip={handleToolTip}
             opened={opened}
@@ -171,7 +175,7 @@ export default function JobForm({ onClose }) {
           />
         </Group>
 
-        <Box className="text-end">
+        <Box className="text-end" mr={10}>
           <Button type="submit">Submit Job</Button>
         </Box>
       </form>
