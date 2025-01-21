@@ -78,13 +78,9 @@ export default function JobDetail() {
   return (
     <>
       <JobInfo job={job} />
-
       <JobBudget job={job} />
-
       <JobStatusPanel job={job} />
-
       <JobPulisherCard client={job?.client} />
-
       {user.role === "CLIENT" && (
         <BiddingSection>
           {!bids && <Text my={"md"}>No Bidders yet</Text>}
@@ -96,8 +92,10 @@ export default function JobDetail() {
           </ScrollArea>
         </BiddingSection>
       )}
-
-      {user.role === "WORKER" && job.status === "open" && (
+      {console.log(user.role)}
+      {console.log(job.status)}
+      {console.log(hasBid)}
+      {user.role === "WORKER" && job.status === "OPEN" && (
         <>
           <PlaceBidButton
             hasBid={!!hasBid}
