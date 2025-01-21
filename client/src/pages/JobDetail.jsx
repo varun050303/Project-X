@@ -18,6 +18,7 @@ import {
   useSubmitBid,
 } from "../features/bids/hooks/useBid";
 import { useGetJob } from "../features/jobs/hooks/useJob";
+
 export default function JobDetail() {
   const { id } = useParams();
   const { user } = useAuth();
@@ -92,9 +93,6 @@ export default function JobDetail() {
           </ScrollArea>
         </BiddingSection>
       )}
-      {console.log(user.role)}
-      {console.log(job.status)}
-      {console.log(hasBid)}
       {user.role === "WORKER" && job.status === "OPEN" && (
         <>
           <PlaceBidButton
