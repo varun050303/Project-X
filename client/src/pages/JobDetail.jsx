@@ -82,15 +82,22 @@ export default function JobDetail() {
       <JobBudget job={job} />
       <JobStatusPanel job={job} />
       <JobPulisherCard client={job?.client} />
+      {user.role === "CLIENT"}
       {user.role === "CLIENT" && (
         <BiddingSection>
-          {!bids && <Text my={"md"}>No Bidders yet</Text>}
-          <ScrollArea h={"auto"} mah={500}>
-            {bids.map((bid) => {
-              console.log(bid);
-              return <BiddingCard key={bid.id} bid={bid} jobId={id} />;
-            })}
-          </ScrollArea>
+          {!bids || bids.length === 0 ? (
+            <Text my={"md"}>No Bidders yet</Text>
+          ) : (
+            <ScrollArea h={"500"} mah={500} type="auto">
+              {bids
+                .filter((bid) => {
+                  return bid.status !== "ACCEPTED";
+                })
+                .map((bid) => {
+                  return <BiddingCard key={bid.id} bid={bid} jobId={id} />;
+                })}
+            </ScrollArea>
+          )}
         </BiddingSection>
       )}
       {user.role === "WORKER" && job.status === "OPEN" && (

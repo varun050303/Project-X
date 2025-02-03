@@ -34,7 +34,7 @@ export default function BiddingCard({ bid, jobId }) {
           {bid?.message}
         </Text>
       </Card>
-      {!(bid.status === "REJECTED" || "ACCEPTED") && (
+      {!(bid.status === ("REJECTED" || "ACCEPTED")) && (
         <Group justify="space-around">
           <Button
             leftSection={<FaCheck color="green" />}
