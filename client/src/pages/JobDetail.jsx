@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { ScrollArea, Text } from "@mantine/core";
+import { Avatar, Card, Group, ScrollArea, Text, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useAuth } from "../contexts/auth.context";
 import { useForm } from "@mantine/form";
@@ -18,6 +18,7 @@ import {
   useSubmitBid,
 } from "../features/bids/hooks/useBid";
 import { useGetJob } from "../features/jobs/hooks/useJob";
+import { FaRupeeSign } from "react-icons/fa";
 
 export default function JobDetail() {
   const { id } = useParams();
@@ -76,26 +77,70 @@ export default function JobDetail() {
     );
   }
 
+  const acceptedBid = bids.find((bid) => bid.status === "ACCEPTED");
+  const nonAcceptedBids = bids.filter((bid) => bid.status !== "ACCEPTED");
+
+  function AcceptedBidCard({ bid }) {
+    if (!bid) {
+      return null;
+    }
+
+    return (
+      <Card shadow="sm" padding="lg" style={{ marginBottom: "1rem" }}>
+        <Title weight={500} order={5} c={"orange"} fw={700}>
+          Accepted Bid
+        </Title>
+        <Card p={0} pt={20}>
+          <Group justify="space-between">
+            <Group gap={"sm"}>
+              <Avatar
+                key={bid?.id}
+                size={"sm"}
+                name={bid?.worker?.user?.name}
+              />
+              <Text c={"white"}>{bid?.worker?.user?.name}</Text>
+            </Group>
+            <Text fw={700} c={"white"}>
+              Bid : <FaRupeeSign className="text-sm" />
+              {bid?.amount}
+            </Text>
+          </Group>
+          <Text c={"white"} mt={"md"}>
+            {bid?.message}
+          </Text>
+        </Card>
+      </Card>
+    );
+  }
+
+  const getScrollAreaHeight = () => {
+    if (!bids || bids.length === 0) {
+      return "auto";
+    }
+    if (acceptedBid && nonAcceptedBids.length === 0) {
+      return "auto";
+    }
+    return 500;
+  };
+
   return (
     <>
       <JobInfo job={job} />
       <JobBudget job={job} />
       <JobStatusPanel job={job} />
       <JobPulisherCard client={job?.client} />
-      {user.role === "CLIENT"}
+      {user.role === "CLIENT" && acceptedBid && (
+        <AcceptedBidCard bid={acceptedBid} />
+      )}
       {user.role === "CLIENT" && (
         <BiddingSection>
           {!bids || bids.length === 0 ? (
             <Text my={"md"}>No Bidders yet</Text>
           ) : (
-            <ScrollArea h={"500"} mah={500} type="auto">
-              {bids
-                .filter((bid) => {
-                  return bid.status !== "ACCEPTED";
-                })
-                .map((bid) => {
-                  return <BiddingCard key={bid.id} bid={bid} jobId={id} />;
-                })}
+            <ScrollArea h={getScrollAreaHeight()} type="auto">
+              {nonAcceptedBids.map((bid) => (
+                <BiddingCard key={bid.id} bid={bid} jobId={id} />
+              ))}
             </ScrollArea>
           )}
         </BiddingSection>
@@ -110,7 +155,7 @@ export default function JobDetail() {
           <PlaceBidDrawer
             opened={opened}
             form={form}
-            close={close}
+            close={closeDrawer}
             handleSubmit={handleSubmitBid}
           />
         </>
