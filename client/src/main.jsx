@@ -28,23 +28,14 @@ import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 import "@mantine/notifications/styles.css";
 import "@mantine/dates/styles.css";
-import AppErrorBoundary from "./components/ErrorBoundary/ErrorBoundary.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/signup" element={<SignupPage />} />
-
       <Route element={<ProtectedRoutes />}>
-        {/* Wrap only Protected Pages with Error Boundary */}
-        <Route
-          element={
-            <AppErrorBoundary>
-              <Layout />
-            </AppErrorBoundary>
-          }
-        >
+        <Route element={<Layout />}>
           <Route index element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/account">
@@ -55,8 +46,8 @@ const router = createBrowserRouter(
         </Route>
 
         <Route path="/auth/callback" element={<PostAuthRedirect />} />
+        {/* <Route path="/choose-role" element={<ChooseRole />} /> */}
       </Route>
-
       <Route path="*" element={<NotFound />} />
     </>
   )
